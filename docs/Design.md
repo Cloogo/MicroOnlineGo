@@ -1,6 +1,6 @@
 #  High level
 
-    Description:Use C/S model to develop an instant online game for go,neglecting loading
+    Description:Use C/S model to develop an instant online game for Go,neglecting loading
     balance and security.
 
         __________________________________________________________________________________________________________________
@@ -37,3 +37,7 @@
        |  |SQLite |    |   Logout     |         \_____________/                                                            |
        |  |_ _ _ _|    \_ _ _ _ _ _ _ /                                                                                    |
        \___________________________________________________________________________________________________________________/
+
+#Use case
+
+![usecase](https://github.com/Cloogo/MicroOnlineGo/docs/usecase.jpg )
