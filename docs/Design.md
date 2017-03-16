@@ -8,6 +8,16 @@
 
 ***
 
+## Critical Bussiness
+
+    Due to the limitation of development cycle and developers' skill,in the next thirty days,
+    we will try to finish the following bussiness:
+    * login/regist/logout
+    * select room
+    * select desk
+    * view players information
+    * SmartGo Pro
+
 ## Logic Design
 
     Description:Use C/S model to develop an instant online game for Go,neglecting loading
@@ -63,5 +73,3 @@
 ### SmartGo Pro
 
 ![gopro](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/gopro.jpg )
-
-
