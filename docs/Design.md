@@ -71,24 +71,24 @@
 
 ## Screen Navigation
 
-### entrance
+###     Entrance
 
 ![entrance](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/entrance.jpg )
 
-### game lobby
+###     Game Lobby
 
 ![gamelobby](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/lobby.jpg )
 
-### SmartGo Pro
+###     SmartGo Pro
 
 ![gopro](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/gopro.jpg )
 
 
-### Chess Manual List
+###     Chess Manual List
 
 ![chessmanuallist](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/chessmanuallist.jpg)
 
-### Chess Manual
+###     Chess Manual
 
 ![chessmanual](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/chessmanual.jpg)
 
