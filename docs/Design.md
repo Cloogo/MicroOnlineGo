@@ -47,3 +47,21 @@
        |  |SQLite |    |   Logout     |         \_____________/                                                            |
        |  |_ _ _ _|    \_ _ _ _ _ _ _ /                                                                                    |
        \___________________________________________________________________________________________________________________/
+
+## Screen Navigation
+
+***
+
+### entrance
+
+![entrance](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/entrance.jpg )
+
+### game lobby
+
+![gamelobby](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/lobby.jpg )
+
+### SmartGo Pro
+
+![gopro](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/gopro.jpg )
+
+
