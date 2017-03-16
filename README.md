@@ -1,11 +1,10 @@
-#MicroOnlineGo
+MicroOnlineGo
+====
 
-***
-
-##Introduction
+#Introduction
 This is a miniature **instant online game** for **Go**.
 
-##schedule
+#schedule
 | Finished | Module |
 |:---:|:---:|
 | | Log in |
@@ -13,3 +12,4 @@ This is a miniature **instant online game** for **Go**.
 | | Game interface |
 | | Chat room |
 | | Internet connection |
+
