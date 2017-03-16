@@ -1,5 +1,15 @@
 #  High level
 
+***
+
+##  Use Case
+
+![usecase](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/usecase.jpg )
+
+***
+
+## Logic Design
+
     Description:Use C/S model to develop an instant online game for Go,neglecting loading
     balance and security.
 
@@ -37,7 +47,3 @@
        |  |SQLite |    |   Logout     |         \_____________/                                                            |
        |  |_ _ _ _|    \_ _ _ _ _ _ _ /                                                                                    |
        \___________________________________________________________________________________________________________________/
-
-#Use case
-
-![usecase](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/usecase.jpg )
