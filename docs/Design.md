@@ -92,3 +92,6 @@
 
 ![chessmanual](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/chessmanual.jpg)
 
+###     Rank List
+
+![ranklist](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/ranklist.jpg)
