@@ -71,8 +71,6 @@
 
 ## Screen Navigation
 
-***
-
 ### entrance
 
 ![entrance](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/entrance.jpg )
@@ -84,3 +82,13 @@
 ### SmartGo Pro
 
 ![gopro](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/gopro.jpg )
+
+
+### Chess Manual List
+
+![chessmanuallist](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/chessmanuallist.jpg)
+
+### Chess Manual
+
+![chessmanual](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/chessmanual.jpg)
+
