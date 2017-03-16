@@ -112,9 +112,10 @@
 
 ![chessmanual](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/chessmanual.jpg)
         
+###     Rank List
+
         Description:
         After successfully doing the operation "rank list" in Game Lobby,
         the application will display the following window:
-###     Rank List
 
 ![ranklist](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/ranklist.jpg)
