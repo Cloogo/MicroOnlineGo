@@ -40,4 +40,4 @@
 
 #Use case
 
-![usecase](https://github.com/Cloogo/MicroOnlineGo/docs/usecase.jpg )
+![usecase](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/usecase.jpg )
