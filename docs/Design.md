@@ -18,6 +18,8 @@
     * view players information
     * SmartGo Pro
 
+***
+
 ## Logic Design
 
     Description:Use C/S model to develop an instant online game for Go,neglecting loading
@@ -57,6 +59,15 @@
        |  |SQLite |    |   Logout     |         \_____________/                                                            |
        |  |_ _ _ _|    \_ _ _ _ _ _ _ /                                                                                    |
        \___________________________________________________________________________________________________________________/
+
+
+*** 
+
+## GUI switch(Provided by Alinshans)
+
+![guiswitch](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/guiswitch.jpg )
+
+***
 
 ## Screen Navigation
 
