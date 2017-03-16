@@ -73,25 +73,48 @@
 
 ###     Entrance
 
+        Description:
+        After successfully establishing connection to the server,
+        the application will display the following window:
+
 ![entrance](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/entrance.jpg )
 
 ###     Game Lobby
+
+        Description:
+        After successfully doing the operation "login"/"regist" in Entrance,
+        the application will display the following window:
 
 ![gamelobby](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/lobby.jpg )
 
 ###     SmartGo Pro
 
+        Description:
+        After successfully doing the operation "sitdown" in Game Lobby,
+        the application will display the following window:
+
 ![gopro](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/gopro.jpg )
 
 
 ###     Chess Manual List
+     
+        Description:
+        After successfully doing the operation "chess manual" in Game Lobby,
+        the application will display the following window:
 
 ![chessmanuallist](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/chessmanuallist.jpg)
 
 ###     Chess Manual
+       
+        Description:
+        After successfully doing the operation "view" in Chess Manual List,
+        the application will display the following window:
 
 ![chessmanual](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/chessmanual.jpg)
-
+        
+        Description:
+        After successfully doing the operation "rank list" in Game Lobby,
+        the application will display the following window:
 ###     Rank List
 
 ![ranklist](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/ranklist.jpg)
