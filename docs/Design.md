@@ -120,3 +120,12 @@
         the application will display the following window:
 
 ![ranklist](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/ranklist.jpg)
+
+***
+
+## Module(Provided by Alinshans)
+
+![module1](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/module1.jpg)
+
+#### test
+
