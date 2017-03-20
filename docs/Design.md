@@ -22,8 +22,9 @@
 
 ## Logic Design
 
-    Description:Use C/S model to develop an instant online game for Go,neglecting loading
-    balance and security.
+    Description:
+    Use C/S model to develop a LAN online game for Go,
+    neglecting loading balance and security.
 
         __________________________________________________________________________________________________________________
        /server:c++                                                                                                        \
@@ -40,8 +41,8 @@
        |               \ _ _ _ _ _ _ _ _ _ /    \_____________/                                               | | |        |
         \_____________________________________________________________________________________________________|_|_|________/
                                                                                                               | | |
-                                                                                                              | | |TCP/IP
-                                                                                                              | | |Connection:**Keep_alive**
+                                                                                                        TCP/IP| | |
+                                                                                     Connection:**Keep_alive**| | |
         ______________________________________________________________________________________________________|_|_|_________
        / client:java                                                                                          | | |        \
        |                                                                                                      | | |        |

@@ -115,14 +115,16 @@
     "room_id":int(0-?),
     "players_sat_down_num":int(0-?),
     "players list":
+    #presented as map.
     #fetch from server and store in client.
     #for the use of displaying information of the rival.
     #update the players list when someone leave the desk or sit down.
     [
         {
-            "desk id":int(0-?),
+            "desk id":int(0-127),
+            #desk_id:be placed left;desk_id|0x80:be placed right.
+            "player_id":desk_id or desk_id|0x80,
             "username":"?",
-            "role":,
             "title":"?",
             "level":?,
             "integral":?,
@@ -132,7 +134,7 @@
     ]
 }
 
-#event of button "sit down" in lobby.
+#event of button "sitdown" in lobby.
 "sitdown request":
 {
     "id":REQ_SITDOWN,
@@ -143,12 +145,179 @@
 
 "sitdown response":
 {
+    #inc the attribute of room "player_satdown_num".
+    #broadcast in the same room.
     {
-        "id":RES_SITDOWN_SUCCESS
+        "id":BROADCAST_SITDOWN,
+        #player_id can be used to determined whether they are in the same desk.
+        "player_id":?,
+        "username":"?",
+        "title":"?",
+        "level":?,
+        "integral":?,
+        "winning_probability":?
     }
     or
     {
         "id":RES_SITDOWN_FAILED,
         "reason":"players number up to the limits/inner server error"
+    }
+}
+
+#event of button "leave" in SmartGo Pro.
+"leave request":
+{   
+    "id":REQ_LEAVE,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?
+}
+
+"leave response":
+{
+    #broadcast
+    {
+        "id":BROADCAST_LEAVE,
+        "player_id":?
+    }
+    or
+    {
+        "id":RES_LEAVE_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of button "readyGo" in SmartGo Pro.
+"readyGo request":
+{
+    "id":REQ_READYGO,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?
+}
+
+#triggered by the challenger.
+"readyGo response":
+{
+    {
+        "id":SINGLECAST_READYGO
+    }
+    or
+    {
+        "id":RES_READYGO_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of "giveup/draw" in SmartGo Pro.
+"giveup request":
+{
+    "id":REQ_GIVEUP/REQ_DRAW,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?,
+    #calculates the result in the client and sends result to the server.
+    "username":"?",
+    "title":"?",
+    "level":?,
+    "integral":?,
+    "winning_probability":?
+}
+
+"giveup response":
+{
+    {
+        "id":RES_GIVEUP/RES_DRAW
+    }
+    or
+    {
+        "id":RES_GIVEUP_FAILED/RES_DRAW_FAILE,
+        "reason":"inner server error"
+    }
+}
+
+#event of "placechess"(where the chess be placed) in SmartGo Pro.
+"placechess request":
+{
+    "id":REQ_PLACECHESS,
+    "room_id":?,
+    "desk_id":?,
+    "x":int(1-18),
+    "y":int(1-18)
+}
+
+"placechess response":
+{
+    #to whom requests "placechess"
+    #when receives the response,switches the timer.
+    {
+        "id":RES_PLACECHESS_SUCCESS
+    }
+    #to rival
+    #when the rival receive the response,switches the timer.
+    {
+        "id":SINGLECAST_PLACECHESS,
+        "x":?,
+        "y":?
+    }
+    or
+    {
+        "id":RES_PLACECHESS_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of "gameover".
+"gameover request":
+{
+    "id":REQ_GAMEOVER_WINNER/REQ_GAMEOVER_LOSER,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?,
+    #calculates the result in the client and sends result to the server.
+    "username":"?",
+    "title":"?",
+    "level":?,
+    "integral":?,
+    "winning_probability":?
+}
+
+"gameover response":
+{
+    {
+        #transfer information sent by winner/loser to loser/winner
+        "id":RES_GAMEOVER,
+        "username":"?",
+        "title":"?",
+        "level":?,
+        "integral":?,
+        "winning_probability":?
+    }
+    or
+    {
+        "id":RES_GAMEOVER_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of "send" in SmartGo Pro.
+"send request":
+{
+    "id":REQ_SEND_MSG,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?,
+    "msg":"chars"
+}
+
+"send response":
+{
+    {
+        "id":RES_SEND_SUCCESS
+    }
+    or
+    {
+        "id":RES_SEND_FAILED,
+        "reason":"inner server error"
     }
 }
