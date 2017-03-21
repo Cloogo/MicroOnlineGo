@@ -1,3 +1,50 @@
+enum{
+    REQ_FETCH_PLAYER_INFO,
+    REQ_REGIST,
+    REQ_LOGIN,
+    REQ_LOGOUT,
+    REQ_FETCH_LOBBY_INFO,
+    REQ_FETCH_ROOM_INFO,
+    REQ_SITDOWN,
+    REQ_LEAVE,
+    REQ_READGO,
+    REQ_GIVEUP,
+    REQ_PLACECHESS,
+    REQ_GAMEOVER_WINNER,
+    REQ_GAMEOVER_LOSER,
+    REQ_SEND_MSG
+};
+
+enum{
+    RES_FETCH_PLAYER_INFO_SUCCESS,
+    RES_FETCH_LOBBY_INFO_FAILED,
+    RES_REGIST_SUCCESS,
+    RES_REGIST_FAILED,
+    RES_LOGIN_SUCCESS,
+    RES_LOGIN_FAILED,
+    RES_LOGOUT_SUCCESS,
+    RES_LOGOUT_FAILED,
+    RES_FETCH_LOBBY_INFO_SUCCESS,
+    RES_FETCH_LOBBY_INFO_FAILED,
+    RES_FETCH_ROOM_INFO_SUCCESS,
+    RES_FETCH_ROOM_INFO_FAILED,
+    BROADCAST_SITDOWN,
+    RES_SITDOWN_FAILED,
+    BROADCAST_LEAVE,
+    RES_LEAVE_FAILED,
+    SINGLECAST_READYGO,
+    RES_READYGO_FAILED,
+    RES_GIVEUP_SUCCESS,
+    RES_GIVEUP_FAILED,
+    RES_PLACECHESS_SUCCESS,
+    RES_PLACECHESS_FAILED,
+    SINGLECAST_PLACECHESS,
+    RES_GAMEOVER,
+    RES_GAMEOVER_FAILED,
+    RES_SEND_MSG_SUCCESS,
+    RES_SEND_MSG_FAILED,
+};
+
 #event after login.
 "fetch player information request":
 {
@@ -111,27 +158,34 @@
 
 "fetch room info response":
 {
-    "id":RES_FETCH_ROOM_INFO,
-    "room_id":int(0-?),
-    "players_sat_down_num":int(0-?),
-    "players list":
-    #presented as map.
-    #fetch from server and store in client.
-    #for the use of displaying information of the rival.
-    #update the players list when someone leave the desk or sit down.
-    [
-        {
-            "desk id":int(0-127),
-            #desk_id:be placed left;desk_id|0x80:be placed right.
-            "player_id":desk_id or desk_id|0x80,
-            "username":"?",
-            "title":"?",
-            "level":?,
-            "integral":?,
-            "winning_probability":?
-        },
-        ...
-    ]
+    {
+        "id":RES_FETCH_ROOM_INFO_SUCCESS,
+        "room_id":int(0-?),
+        "players_sat_down_num":int(0-?),
+        "players list":
+        #presented as map.
+        #fetch from server and store in client.
+        #for the use of displaying information of the rival.
+        #update the players list when someone leave the desk or sit down.
+        [
+            {
+                "desk id":int(0-127),
+                #desk_id:be placed left;desk_id|0x80:be placed right.
+                "player_id":desk_id or desk_id|0x80,
+                "username":"?",
+                "title":"?",
+                "level":?,
+                "integral":?,
+                "winning_probability":?
+            },
+            ...
+        ]
+    }
+    or
+    {
+        "id":RES_FETCH_ROOM_INFO_FAILED,
+        "reason":"inner server error"
+    }
 }
 
 #event of button "sitdown" in lobby.
@@ -209,10 +263,10 @@
     }
 }
 
-#event of "giveup/draw" in SmartGo Pro.
+#event of "giveup" in SmartGo Pro.
 "giveup request":
 {
-    "id":REQ_GIVEUP/REQ_DRAW,
+    "id":REQ_GIVEUP,
     "room_id":?,
     "desk_id":?,
     "player_id":?,
@@ -227,11 +281,11 @@
 "giveup response":
 {
     {
-        "id":RES_GIVEUP/RES_DRAW
+        "id":RES_GIVEUP_SUCCESS
     }
     or
     {
-        "id":RES_GIVEUP_FAILED/RES_DRAW_FAILE,
+        "id":RES_GIVEUP_FAILED,
         "reason":"inner server error"
     }
 }
@@ -313,11 +367,11 @@
 "send response":
 {
     {
-        "id":RES_SEND_SUCCESS
+        "id":RES_SEND_MSG_SUCCESS
     }
     or
     {
-        "id":RES_SEND_FAILED,
+        "id":RES_SEND_MSG_FAILED,
         "reason":"inner server error"
     }
 }
