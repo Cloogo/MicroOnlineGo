@@ -1,13 +1,60 @@
+enum REQUEST_TYPE{
+     FETCH_PLAYER_INFO,
+     REGIST,
+     LOGIN,
+     LOGOUT,
+     FETCH_LOBBY_INFO,
+     FETCH_ROOM_INFO,
+     SITDOWN,
+     LEAVE,
+     READGO,
+     GIVEUP,
+     PLACECHESS,
+     GAMEOVER_WINNER,
+     GAMEOVER_LOSER,
+     SEND_MSG
+};
+
+enum RESPONSE_TYPE{
+     FETCH_PLAYER_INFO_SUCCESS,
+     FETCH_LOBBY_INFO_FAILED,
+     REGIST_SUCCESS,
+     REGIST_FAILED,
+     LOGIN_SUCCESS,
+     LOGIN_FAILED,
+     LOGOUT_SUCCESS,
+     LOGOUT_FAILED,
+     FETCH_LOBBY_INFO_SUCCESS,
+     FETCH_LOBBY_INFO_FAILED,
+     FETCH_ROOM_INFO_SUCCESS,
+     FETCH_ROOM_INFO_FAILED,
+     BROADCAST_SITDOWN,
+     SITDOWN_FAILED,
+     BROADCAST_LEAVE,
+     LEAVE_FAILED,
+     SINGLECAST_READYGO,
+     READYGO_FAILED,
+     GIVEUP_SUCCESS,
+     GIVEUP_FAILED,
+     PLACECHESS_SUCCESS,
+     PLACECHESS_FAILED,
+     SINGLECAST_PLACECHESS,
+     GAMEOVER,
+     GAMEOVER_FAILED,
+     SEND_MSG_SUCCESS,
+     SEND_MSG_FAILED,
+};
+
 #event after login.
 "fetch player information request":
 {
-    "id":REQ_FETCH_PLAYER_INFO
+    "id": FETCH_PLAYER_INFO
 }
 
 "fetch player information request":
 {
     {
-        "id":RES_FETCH_PLAYER_INFO_SUCCESS,
+        "id": FETCH_PLAYER_INFO_SUCCESS,
         "username":"chars(<=16)",
         "title":"Go Buffs/chess player/master",
         "level":int(0-9),
@@ -16,7 +63,7 @@
     }
     or
     {
-        "id":RES_FETCH_PLAYER_INFO_FAILED,
+        "id": FETCH_PLAYER_INFO_FAILED,
         "reason":"inner server error"
     }
 }
@@ -24,7 +71,7 @@
 #event of button "regist" in entrance window.
 "regist request":
 {
-    "id":REQ_REGIST,
+    "id": REGIST,
     "username":"?",
     "passwd":"chars(<=16)",
     "regist_time":"year-month-day hour:min:sec"
@@ -33,11 +80,11 @@
 "regist response":
 {
     {
-        "id":RES_REGIST_SUCCESS
+        "id": REGIST_SUCCESS
     }
     or
     {
-        "id":RES_REGIST_FAILED,
+        "id": REGIST_FAILED,
         "reason:":"user already exists/inner server error"
     }
 }
@@ -45,7 +92,7 @@
 #event of button "login" in entrance window.
 "login request":
 {
-    "id":REQ_LOGIN,
+    "id": LOGIN,
     "username":"?",
     "passwd":"?"
 }
@@ -53,11 +100,11 @@
 "login response":
 {
     {
-        "id":RES_LOGIN_SUCCESS
+        "id": LOGIN_SUCCESS
     }
     or
     {
-        "id":RES_LOGIN_FAILED,
+        "id": LOGIN_FAILED,
         "reason":"no such user/incorrect password/inner server error"
     }
 }
@@ -65,18 +112,18 @@
 #event of button "logout" in lobby.
 "logout request":
 {
-    "id":REQ_LOGOUT,
+    "id": LOGOUT,
     "username":"?"
 }
 
 "logout response":
 {
     {
-        "id":RES_LOGOUT_SUCCESS
+        "id": LOGOUT_SUCCESS
     }
     or
     {
-        "id":RES_LOGOUT_FAILED,
+        "id": LOGOUT_FAILED,
         "reason":"No such user/inner server error"
     }
 }
@@ -84,20 +131,20 @@
 #event after login.
 "fetch lobby info request":
 {
-    "id":REQ_FETCH_LOBBY_INFO
+    "id": FETCH_LOBBY_INFO
 }
 
 "fetch lobby info response":
 {
     {
-        "id":RES_FETCH_LOBBY_INFO_SUCCESS,
+        "id": FETCH_LOBBY_INFO_SUCCESS,
         "online_players_num":int(0-?),
         "on_battle_players_num":int(0-),
         "max_room_id":?
     }
     or
     {
-        "id":RES_FETCH_LOBBY_INFO_FAILED,
+        "id": FETCH_LOBBY_INFO_FAILED,
         "reason":"inner server error"
     }
 }
@@ -105,37 +152,46 @@
 #event of button "next/prev room" in lobby.
 "fetch room info request":
 {
-    "id":REQ_FETCH_ROOM_INFO,
+    "id": FETCH_ROOM_INFO,
     "room_id":int(0-?)
 }
 
 "fetch room info response":
 {
-    "id":RES_FETCH_ROOM_INFO,
-    "room_id":int(0-?),
-    "players_sat_down_num":int(0-?),
-    "players list":
-    #fetch from server and store in client.
-    #for the use of displaying information of the rival.
-    #update the players list when someone leave the desk or sit down.
-    [
-        {
-            "desk id":int(0-?),
-            "username":"?",
-            "role":,
-            "title":"?",
-            "level":?,
-            "integral":?,
-            "winning_probability":?
-        },
-        ...
-    ]
+    {
+        "id": FETCH_ROOM_INFO_SUCCESS,
+        "room_id":int(0-?),
+        "players_sat_down_num":int(0-?),
+        "players list":
+        #presented as map.
+        #fetch from server and store in client.
+        #for the use of displaying information of the rival.
+        #update the players list when someone leave the desk or sit down.
+        [
+            {
+                "desk id":int(0-127),
+                #desk_id:be placed left;desk_id|0x80:be placed right.
+                "player_id":desk_id or desk_id|0x80,
+                "username":"?",
+                "title":"?",
+                "level":?,
+                "integral":?,
+                "winning_probability":?
+            },
+            ...
+        ]
+    }
+    or
+    {
+        "id": FETCH_ROOM_INFO_FAILED,
+        "reason":"inner server error"
+    }
 }
 
-#event of button "sit down" in lobby.
+#event of button "sitdown" in lobby.
 "sitdown request":
 {
-    "id":REQ_SITDOWN,
+    "id": SITDOWN,
     "room_id":?,
     "desk_id":?,
     "username":"?"
@@ -143,12 +199,179 @@
 
 "sitdown response":
 {
+    #inc the attribute of room "player_satdown_num".
+    #broadcast in the same room.
     {
-        "id":RES_SITDOWN_SUCCESS
+        "id":BROADCAST_SITDOWN,
+        #player_id can be used to determined whether they are in the same desk.
+        "player_id":?,
+        "username":"?",
+        "title":"?",
+        "level":?,
+        "integral":?,
+        "winning_probability":?
     }
     or
     {
-        "id":RES_SITDOWN_FAILED,
+        "id": SITDOWN_FAILED,
         "reason":"players number up to the limits/inner server error"
+    }
+}
+
+#event of button "leave" in SmartGo Pro.
+"leave request":
+{   
+    "id": LEAVE,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?
+}
+
+"leave response":
+{
+    #broadcast
+    {
+        "id":BROADCAST_LEAVE,
+        "player_id":?
+    }
+    or
+    {
+        "id": LEAVE_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of button "readyGo" in SmartGo Pro.
+"readyGo request":
+{
+    "id": READYGO,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?
+}
+
+#triggered by the challenger.
+"readyGo response":
+{
+    {
+        "id":SINGLECAST_READYGO
+    }
+    or
+    {
+        "id": READYGO_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of "giveup" in SmartGo Pro.
+"giveup request":
+{
+    "id": GIVEUP,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?,
+    #calculates the result in the client and sends result to the server.
+    "username":"?",
+    "title":"?",
+    "level":?,
+    "integral":?,
+    "winning_probability":?
+}
+
+"giveup response":
+{
+    {
+        "id": GIVEUP_SUCCESS
+    }
+    or
+    {
+        "id": GIVEUP_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of "placechess"(where the chess be placed) in SmartGo Pro.
+"placechess request":
+{
+    "id": PLACECHESS,
+    "room_id":?,
+    "desk_id":?,
+    "x":int(1-18),
+    "y":int(1-18)
+}
+
+"placechess response":
+{
+    #to whom requests "placechess"
+    #when receives the response,switches the timer.
+    {
+        "id": PLACECHESS_SUCCESS
+    }
+    #to rival
+    #when the rival receive the response,switches the timer.
+    {
+        "id":SINGLECAST_PLACECHESS,
+        "x":?,
+        "y":?
+    }
+    or
+    {
+        "id": PLACECHESS_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of "gameover".
+"gameover request":
+{
+    "id": GAMEOVER_WINNER/ GAMEOVER_LOSER,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?,
+    #calculates the result in the client and sends result to the server.
+    "username":"?",
+    "title":"?",
+    "level":?,
+    "integral":?,
+    "winning_probability":?
+}
+
+"gameover response":
+{
+    {
+        #transfer information sent by winner/loser to loser/winner
+        "id": GAMEOVER,
+        "username":"?",
+        "title":"?",
+        "level":?,
+        "integral":?,
+        "winning_probability":?
+    }
+    or
+    {
+        "id": GAMEOVER_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of "send" in SmartGo Pro.
+"send request":
+{
+    "id": SEND_MSG,
+    "room_id":?,
+    "desk_id":?,
+    "player_id":?,
+    "msg":"chars"
+}
+
+"send response":
+{
+    {
+        "id": SEND_MSG_SUCCESS
+    }
+    or
+    {
+        "id": SEND_MSG_FAILED,
+        "reason":"inner server error"
     }
 }
