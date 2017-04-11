@@ -1,0 +1,154 @@
+#event after login.
+"fetch player information request":
+{
+    "id":REQ_FETCH_PLAYER_INFO
+}
+
+"fetch player information request":
+{
+    {
+        "id":RES_FETCH_PLAYER_INFO_SUCCESS,
+        "username":"chars(<=16)",
+        "title":"Go Buffs/chess player/master",
+        "level":int(0-9),
+        "integral":int(<=?),
+        "winnig_probability":float(0.0%-100.0%)
+    }
+    or
+    {
+        "id":RES_FETCH_PLAYER_INFO_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of button "regist" in entrance window.
+"regist request":
+{
+    "id":REQ_REGIST,
+    "username":"?",
+    "passwd":"chars(<=16)",
+    "regist_time":"year-month-day hour:min:sec"
+}
+
+"regist response":
+{
+    {
+        "id":RES_REGIST_SUCCESS
+    }
+    or
+    {
+        "id":RES_REGIST_FAILED,
+        "reason:":"user already exists/inner server error"
+    }
+}
+
+#event of button "login" in entrance window.
+"login request":
+{
+    "id":REQ_LOGIN,
+    "username":"?",
+    "passwd":"?"
+}
+
+"login response":
+{
+    {
+        "id":RES_LOGIN_SUCCESS
+    }
+    or
+    {
+        "id":RES_LOGIN_FAILED,
+        "reason":"no such user/incorrect password/inner server error"
+    }
+}
+
+#event of button "logout" in lobby.
+"logout request":
+{
+    "id":REQ_LOGOUT,
+    "username":"?"
+}
+
+"logout response":
+{
+    {
+        "id":RES_LOGOUT_SUCCESS
+    }
+    or
+    {
+        "id":RES_LOGOUT_FAILED,
+        "reason":"No such user/inner server error"
+    }
+}
+
+#event after login.
+"fetch lobby info request":
+{
+    "id":REQ_FETCH_LOBBY_INFO
+}
+
+"fetch lobby info response":
+{
+    {
+        "id":RES_FETCH_LOBBY_INFO_SUCCESS,
+        "online_players_num":int(0-?),
+        "on_battle_players_num":int(0-),
+        "max_room_id":?
+    }
+    or
+    {
+        "id":RES_FETCH_LOBBY_INFO_FAILED,
+        "reason":"inner server error"
+    }
+}
+
+#event of button "next/prev room" in lobby.
+"fetch room info request":
+{
+    "id":REQ_FETCH_ROOM_INFO,
+    "room_id":int(0-?)
+}
+
+"fetch room info response":
+{
+    "id":RES_FETCH_ROOM_INFO,
+    "room_id":int(0-?),
+    "players_sat_down_num":int(0-?),
+    "players list":
+    #fetch from server and store in client.
+    #for the use of displaying information of the rival.
+    #update the players list when someone leave the desk or sit down.
+    [
+        {
+            "desk id":int(0-?),
+            "username":"?",
+            "role":,
+            "title":"?",
+            "level":?,
+            "integral":?,
+            "winning_probability":?
+        },
+        ...
+    ]
+}
+
+#event of button "sit down" in lobby.
+"sitdown request":
+{
+    "id":REQ_SITDOWN,
+    "room_id":?,
+    "desk_id":?,
+    "username":"?"
+}
+
+"sitdown response":
+{
+    {
+        "id":RES_SITDOWN_SUCCESS
+    }
+    or
+    {
+        "id":RES_SITDOWN_FAILED,
+        "reason":"players number up to the limits/inner server error"
+    }
+}
