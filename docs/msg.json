@@ -1,60 +1,60 @@
-enum{
-    REQ_FETCH_PLAYER_INFO,
-    REQ_REGIST,
-    REQ_LOGIN,
-    REQ_LOGOUT,
-    REQ_FETCH_LOBBY_INFO,
-    REQ_FETCH_ROOM_INFO,
-    REQ_SITDOWN,
-    REQ_LEAVE,
-    REQ_READGO,
-    REQ_GIVEUP,
-    REQ_PLACECHESS,
-    REQ_GAMEOVER_WINNER,
-    REQ_GAMEOVER_LOSER,
-    REQ_SEND_MSG
+enum REQUEST_TYPE{
+     FETCH_PLAYER_INFO,
+     REGIST,
+     LOGIN,
+     LOGOUT,
+     FETCH_LOBBY_INFO,
+     FETCH_ROOM_INFO,
+     SITDOWN,
+     LEAVE,
+     READGO,
+     GIVEUP,
+     PLACECHESS,
+     GAMEOVER_WINNER,
+     GAMEOVER_LOSER,
+     SEND_MSG
 };
 
-enum{
-    RES_FETCH_PLAYER_INFO_SUCCESS,
-    RES_FETCH_LOBBY_INFO_FAILED,
-    RES_REGIST_SUCCESS,
-    RES_REGIST_FAILED,
-    RES_LOGIN_SUCCESS,
-    RES_LOGIN_FAILED,
-    RES_LOGOUT_SUCCESS,
-    RES_LOGOUT_FAILED,
-    RES_FETCH_LOBBY_INFO_SUCCESS,
-    RES_FETCH_LOBBY_INFO_FAILED,
-    RES_FETCH_ROOM_INFO_SUCCESS,
-    RES_FETCH_ROOM_INFO_FAILED,
-    BROADCAST_SITDOWN,
-    RES_SITDOWN_FAILED,
-    BROADCAST_LEAVE,
-    RES_LEAVE_FAILED,
-    SINGLECAST_READYGO,
-    RES_READYGO_FAILED,
-    RES_GIVEUP_SUCCESS,
-    RES_GIVEUP_FAILED,
-    RES_PLACECHESS_SUCCESS,
-    RES_PLACECHESS_FAILED,
-    SINGLECAST_PLACECHESS,
-    RES_GAMEOVER,
-    RES_GAMEOVER_FAILED,
-    RES_SEND_MSG_SUCCESS,
-    RES_SEND_MSG_FAILED,
+enum RESPONSE_TYPE{
+     FETCH_PLAYER_INFO_SUCCESS,
+     FETCH_LOBBY_INFO_FAILED,
+     REGIST_SUCCESS,
+     REGIST_FAILED,
+     LOGIN_SUCCESS,
+     LOGIN_FAILED,
+     LOGOUT_SUCCESS,
+     LOGOUT_FAILED,
+     FETCH_LOBBY_INFO_SUCCESS,
+     FETCH_LOBBY_INFO_FAILED,
+     FETCH_ROOM_INFO_SUCCESS,
+     FETCH_ROOM_INFO_FAILED,
+     BROADCAST_SITDOWN,
+     SITDOWN_FAILED,
+     BROADCAST_LEAVE,
+     LEAVE_FAILED,
+     SINGLECAST_READYGO,
+     READYGO_FAILED,
+     GIVEUP_SUCCESS,
+     GIVEUP_FAILED,
+     PLACECHESS_SUCCESS,
+     PLACECHESS_FAILED,
+     SINGLECAST_PLACECHESS,
+     GAMEOVER,
+     GAMEOVER_FAILED,
+     SEND_MSG_SUCCESS,
+     SEND_MSG_FAILED,
 };
 
 #event after login.
 "fetch player information request":
 {
-    "id":REQ_FETCH_PLAYER_INFO
+    "id": FETCH_PLAYER_INFO
 }
 
 "fetch player information request":
 {
     {
-        "id":RES_FETCH_PLAYER_INFO_SUCCESS,
+        "id": FETCH_PLAYER_INFO_SUCCESS,
         "username":"chars(<=16)",
         "title":"Go Buffs/chess player/master",
         "level":int(0-9),
@@ -63,7 +63,7 @@ enum{
     }
     or
     {
-        "id":RES_FETCH_PLAYER_INFO_FAILED,
+        "id": FETCH_PLAYER_INFO_FAILED,
         "reason":"inner server error"
     }
 }
@@ -71,7 +71,7 @@ enum{
 #event of button "regist" in entrance window.
 "regist request":
 {
-    "id":REQ_REGIST,
+    "id": REGIST,
     "username":"?",
     "passwd":"chars(<=16)",
     "regist_time":"year-month-day hour:min:sec"
@@ -80,11 +80,11 @@ enum{
 "regist response":
 {
     {
-        "id":RES_REGIST_SUCCESS
+        "id": REGIST_SUCCESS
     }
     or
     {
-        "id":RES_REGIST_FAILED,
+        "id": REGIST_FAILED,
         "reason:":"user already exists/inner server error"
     }
 }
@@ -92,7 +92,7 @@ enum{
 #event of button "login" in entrance window.
 "login request":
 {
-    "id":REQ_LOGIN,
+    "id": LOGIN,
     "username":"?",
     "passwd":"?"
 }
@@ -100,11 +100,11 @@ enum{
 "login response":
 {
     {
-        "id":RES_LOGIN_SUCCESS
+        "id": LOGIN_SUCCESS
     }
     or
     {
-        "id":RES_LOGIN_FAILED,
+        "id": LOGIN_FAILED,
         "reason":"no such user/incorrect password/inner server error"
     }
 }
@@ -112,18 +112,18 @@ enum{
 #event of button "logout" in lobby.
 "logout request":
 {
-    "id":REQ_LOGOUT,
+    "id": LOGOUT,
     "username":"?"
 }
 
 "logout response":
 {
     {
-        "id":RES_LOGOUT_SUCCESS
+        "id": LOGOUT_SUCCESS
     }
     or
     {
-        "id":RES_LOGOUT_FAILED,
+        "id": LOGOUT_FAILED,
         "reason":"No such user/inner server error"
     }
 }
@@ -131,20 +131,20 @@ enum{
 #event after login.
 "fetch lobby info request":
 {
-    "id":REQ_FETCH_LOBBY_INFO
+    "id": FETCH_LOBBY_INFO
 }
 
 "fetch lobby info response":
 {
     {
-        "id":RES_FETCH_LOBBY_INFO_SUCCESS,
+        "id": FETCH_LOBBY_INFO_SUCCESS,
         "online_players_num":int(0-?),
         "on_battle_players_num":int(0-),
         "max_room_id":?
     }
     or
     {
-        "id":RES_FETCH_LOBBY_INFO_FAILED,
+        "id": FETCH_LOBBY_INFO_FAILED,
         "reason":"inner server error"
     }
 }
@@ -152,14 +152,14 @@ enum{
 #event of button "next/prev room" in lobby.
 "fetch room info request":
 {
-    "id":REQ_FETCH_ROOM_INFO,
+    "id": FETCH_ROOM_INFO,
     "room_id":int(0-?)
 }
 
 "fetch room info response":
 {
     {
-        "id":RES_FETCH_ROOM_INFO_SUCCESS,
+        "id": FETCH_ROOM_INFO_SUCCESS,
         "room_id":int(0-?),
         "players_sat_down_num":int(0-?),
         "players list":
@@ -183,7 +183,7 @@ enum{
     }
     or
     {
-        "id":RES_FETCH_ROOM_INFO_FAILED,
+        "id": FETCH_ROOM_INFO_FAILED,
         "reason":"inner server error"
     }
 }
@@ -191,7 +191,7 @@ enum{
 #event of button "sitdown" in lobby.
 "sitdown request":
 {
-    "id":REQ_SITDOWN,
+    "id": SITDOWN,
     "room_id":?,
     "desk_id":?,
     "username":"?"
@@ -213,7 +213,7 @@ enum{
     }
     or
     {
-        "id":RES_SITDOWN_FAILED,
+        "id": SITDOWN_FAILED,
         "reason":"players number up to the limits/inner server error"
     }
 }
@@ -221,7 +221,7 @@ enum{
 #event of button "leave" in SmartGo Pro.
 "leave request":
 {   
-    "id":REQ_LEAVE,
+    "id": LEAVE,
     "room_id":?,
     "desk_id":?,
     "player_id":?
@@ -236,7 +236,7 @@ enum{
     }
     or
     {
-        "id":RES_LEAVE_FAILED,
+        "id": LEAVE_FAILED,
         "reason":"inner server error"
     }
 }
@@ -244,7 +244,7 @@ enum{
 #event of button "readyGo" in SmartGo Pro.
 "readyGo request":
 {
-    "id":REQ_READYGO,
+    "id": READYGO,
     "room_id":?,
     "desk_id":?,
     "player_id":?
@@ -258,7 +258,7 @@ enum{
     }
     or
     {
-        "id":RES_READYGO_FAILED,
+        "id": READYGO_FAILED,
         "reason":"inner server error"
     }
 }
@@ -266,7 +266,7 @@ enum{
 #event of "giveup" in SmartGo Pro.
 "giveup request":
 {
-    "id":REQ_GIVEUP,
+    "id": GIVEUP,
     "room_id":?,
     "desk_id":?,
     "player_id":?,
@@ -281,11 +281,11 @@ enum{
 "giveup response":
 {
     {
-        "id":RES_GIVEUP_SUCCESS
+        "id": GIVEUP_SUCCESS
     }
     or
     {
-        "id":RES_GIVEUP_FAILED,
+        "id": GIVEUP_FAILED,
         "reason":"inner server error"
     }
 }
@@ -293,7 +293,7 @@ enum{
 #event of "placechess"(where the chess be placed) in SmartGo Pro.
 "placechess request":
 {
-    "id":REQ_PLACECHESS,
+    "id": PLACECHESS,
     "room_id":?,
     "desk_id":?,
     "x":int(1-18),
@@ -305,7 +305,7 @@ enum{
     #to whom requests "placechess"
     #when receives the response,switches the timer.
     {
-        "id":RES_PLACECHESS_SUCCESS
+        "id": PLACECHESS_SUCCESS
     }
     #to rival
     #when the rival receive the response,switches the timer.
@@ -316,7 +316,7 @@ enum{
     }
     or
     {
-        "id":RES_PLACECHESS_FAILED,
+        "id": PLACECHESS_FAILED,
         "reason":"inner server error"
     }
 }
@@ -324,7 +324,7 @@ enum{
 #event of "gameover".
 "gameover request":
 {
-    "id":REQ_GAMEOVER_WINNER/REQ_GAMEOVER_LOSER,
+    "id": GAMEOVER_WINNER/ GAMEOVER_LOSER,
     "room_id":?,
     "desk_id":?,
     "player_id":?,
@@ -340,7 +340,7 @@ enum{
 {
     {
         #transfer information sent by winner/loser to loser/winner
-        "id":RES_GAMEOVER,
+        "id": GAMEOVER,
         "username":"?",
         "title":"?",
         "level":?,
@@ -349,7 +349,7 @@ enum{
     }
     or
     {
-        "id":RES_GAMEOVER_FAILED,
+        "id": GAMEOVER_FAILED,
         "reason":"inner server error"
     }
 }
@@ -357,7 +357,7 @@ enum{
 #event of "send" in SmartGo Pro.
 "send request":
 {
-    "id":REQ_SEND_MSG,
+    "id": SEND_MSG,
     "room_id":?,
     "desk_id":?,
     "player_id":?,
@@ -367,11 +367,11 @@ enum{
 "send response":
 {
     {
-        "id":RES_SEND_MSG_SUCCESS
+        "id": SEND_MSG_SUCCESS
     }
     or
     {
-        "id":RES_SEND_MSG_FAILED,
+        "id": SEND_MSG_FAILED,
         "reason":"inner server error"
     }
 }

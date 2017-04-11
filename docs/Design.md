@@ -126,6 +126,3 @@
 ## Module(Provided by Alinshans)
 
 ![module1](https://github.com/Cloogo/MicroOnlineGo/blob/master/docs/module1.jpg)
-
-#### test
-
