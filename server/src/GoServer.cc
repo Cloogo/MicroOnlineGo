@@ -26,7 +26,10 @@ void
 GoServer::onConnection(const TcpConnectionPtr& conn){
     LOG_INFO<<"GoServer -"<<conn->peerAddress().toIpPort()<<"->"
             <<conn->localAddress().toIpPort()<<" is "
-            <<(conn->connected()?"UP":"DOWN");   
+            <<(conn->connected()?"UP":"DOWN");
+    if(conn->connected()){
+    }else{
+    }
 }
 
 void
@@ -44,6 +47,9 @@ GoServer::receive(const TcpConnectionPtr& conn,
       }else if (buf->readableBytes() >= len + kHeaderLen){
         buf->retrieve(kHeaderLen);
         std::string msg(buf->peek(), len);
+        LOG_INFO<<"REQUEST -"<<conn->peerAddress().toIpPort()<<"->"
+        <<conn->localAddress().toIpPort()<<" len: "<<len
+        <<" content: "<<msg;
         PacketParser packet_(msg,boost::bind(&GoServer::send,this,_1,_2));
         packet_.dispatch();
         buf->retrieve(len);
@@ -60,6 +66,9 @@ GoServer::send(const TcpConnectionPtr& conn,
     buf.append(message.data(), message.size());
     int32_t len = static_cast<int32_t>(message.size());
     int32_t be32 = muduo::net::sockets::hostToNetwork32(len);
+    LOG_INFO<<"RESPONSE -"<<conn->localAddress().toIpPort()<<"->"
+    <<conn->peerAddress().toIpPort()<<" len: "<<len
+    <<" content: "<<message;
     buf.prepend(&be32, sizeof be32);
     conn->send(&buf);
 }

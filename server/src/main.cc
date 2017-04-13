@@ -1,4 +1,5 @@
 #include "GoServer.h"
+#include "Sqlconn.h"
 #include <muduo/base/Logging.h>
 #include <muduo/net/EventLoop.h>
 
@@ -11,5 +12,10 @@ int main(){
     InetAddress listenAddr(6000);
     GoServer server(&loop,listenAddr);
     server.start();
+    Sqlconn sqlpool("mysql://localhost/go?user=Cloogo&password=1234");
+    if(sqlpool.start()==false){
+        LOG_ERROR<<"failed to create mysql connection pool";
+        exit(1);
+    }
     loop.loop();
 }
