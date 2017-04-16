@@ -1,10 +1,16 @@
 #include "GoServer.h"
-#include "Sqlconn.h"
+#include "SqlManager.h"
 #include <muduo/base/Logging.h>
 #include <muduo/net/EventLoop.h>
+#include <pthread.h>
 
 using namespace muduo;
 using namespace muduo::net;
+
+pthread_once_t SqlManager::ponce=PTHREAD_ONCE_INIT;
+SqlManager* SqlManager::instance=NULL;
+std::string SqlManager::url="mysql://localhost/go?user=Cloogo&password=1234";
+int SqlManager::maxConnsNum=1024;
 
 int main(){
     LOG_INFO<<"pid = "<<getpid();
@@ -12,8 +18,7 @@ int main(){
     InetAddress listenAddr(6000);
     GoServer server(&loop,listenAddr);
     server.start();
-    Sqlconn sqlpool("mysql://localhost/go?user=Cloogo&password=1234");
-    if(sqlpool.start()==false){
+    if(SqlManager::getInstance().start()==false){
         LOG_ERROR<<"failed to create mysql connection pool";
         exit(1);
     }

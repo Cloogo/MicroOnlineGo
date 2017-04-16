@@ -5,7 +5,7 @@
 
 class Account{
 public:
-    Account(redbbud::parser::json::Json in);
+    Account(redbud::parser::json::Json in);
     ~Account(){}
     redbud::parser::json::Json check();
 private:
