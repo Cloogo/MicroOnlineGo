@@ -9,6 +9,7 @@
 #include "RoomInfo.h"
 #include "PlayerInfo.h"
 #include "PlayersInfo.h"
+#include "GroupChat.h"
 #include <redbud/parser/json_parser.h>
 #define T REQUEST_TYPE
 
@@ -55,7 +56,6 @@ PacketParser::dispatch(){
             out=logout.handle();
             RoomManager::getInstance().remove(conn,0);
             decode();
-            conn->shutdown();
             return;
         }
         break;
@@ -81,6 +81,12 @@ PacketParser::dispatch(){
         {
             RoomInfo roomInfo(in);
             out=roomInfo.handle();
+        }
+        break;
+        case T::GROUP_CHAT:
+        {
+            GroupChat groupChat(in);
+            out=groupChat.handle();
         }
         break;
         case T::SITDOWN:
