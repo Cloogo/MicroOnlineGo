@@ -7,15 +7,10 @@
 using namespace muduo;
 using namespace muduo::net;
 
-pthread_once_t SqlManager::ponce=PTHREAD_ONCE_INIT;
-SqlManager* SqlManager::instance=NULL;
-std::string SqlManager::url="mysql://localhost/go?user=Cloogo&password=1234";
-int SqlManager::maxConnsNum=1024;
-
 int main(){
     LOG_INFO<<"pid = "<<getpid();
     EventLoop loop;
-    InetAddress listenAddr(6000);
+    InetAddress listenAddr(60000);
     GoServer server(&loop,listenAddr);
     server.start();
     if(SqlManager::getInstance().start()==false){

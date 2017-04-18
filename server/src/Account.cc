@@ -1,6 +1,6 @@
 #include "Account.h"
 #include "Proto.h"
-#include "SqlManager.h"
+#include "SqlStm.h"
 #include <zdb/zdb.h>
 #include <zdb/Exception.h>
 #include <zdb/Connection.h>
@@ -16,13 +16,16 @@ Account::Account(Json in){
 
 Json
 Account::check(){
-    Connection_T sqlConn=SqlManager::getInstance().getConn();
     std::string stm="select * from users where account=\""+account+"\"";
-    ResultSet_T r=Connection_executeQuery(sqlConn,stm.c_str());
-    if(ResultSet_next(r)){
+    if(SqlStm::isExisted(stm)){
         out["response type"]=EXISTED;
     }else{
         out["response type"]=NOT_EXISTED;
     }
     return out;
+}
+
+Json
+Account::handle(){
+    return check();
 }

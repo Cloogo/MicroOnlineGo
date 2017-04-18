@@ -7,6 +7,7 @@ class Account{
 public:
     Account(redbud::parser::json::Json in);
     ~Account(){}
+    redbud::parser::json::Json handle();
     redbud::parser::json::Json check();
 private:
     redbud::parser::json::Json out;

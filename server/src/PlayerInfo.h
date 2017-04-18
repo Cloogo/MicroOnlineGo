@@ -8,6 +8,6 @@ public:
     redbud::parser::json::Json handle();
 private:
     redbud::parser::json::Json out;
-    std::string username;
+    std::string account;
 };
 #endif

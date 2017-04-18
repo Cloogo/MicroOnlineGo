@@ -50,7 +50,7 @@ GoServer::receive(const TcpConnectionPtr& conn,
         LOG_INFO<<"REQUEST -"<<conn->peerAddress().toIpPort()<<"->"
         <<conn->localAddress().toIpPort()<<" len: "<<len
         <<" content: "<<msg;
-        PacketParser packet_(msg,boost::bind(&GoServer::send,this,_1,_2));
+        PacketParser packet_(conn,msg,boost::bind(&GoServer::send,this,_1,_2));
         packet_.dispatch();
         buf->retrieve(len);
       }else{

@@ -1,13 +1,24 @@
 #include "PacketParser.h"
 #include "Proto.h"
+#include "Account.h"
+#include "Login.h"
+#include "Logout.h"
+#include "Regist.h"
+#include "RoomManager.h"
+#include "LobbyInfo.h"
+#include "RoomInfo.h"
+#include "PlayerInfo.h"
+#include "PlayersInfo.h"
 #include <redbud/parser/json_parser.h>
+#define T REQUEST_TYPE
+
 using namespace redbud::parser::json;
 using namespace std;
 
 void
 PacketParser::encode(){
     auto str=out.dumps();
-    msgCb(conn,str);
+    sendBack(conn,str);
 }
 
 void
@@ -18,38 +29,75 @@ PacketParser::decode(){
 void
 PacketParser::dispatch(){
     decode();
-    switch(REQUEST_TYPE(in["request type"])){
-        case REQUEST_TYPE::LOGIN:
+    switch(T(in["request_type"].as_number())){
+        case T::ACCOUNT_CHECK:
+        {
+            Account account(in);
+            out=account.handle();
+        }
+        break;
+        case T::LOGIN:
+        {
             Login login(in);
             out=login.handle();
-            break;
-        case REQUEST_TYPE::REGIST:
+            RoomManager::getInstance().add(conn,0);
+        }
+        break;
+        case T::REGIST:
+        {
             Regist regist(in);
             out=regist.handle();
+        }
         break;
-        case REQUEST_TYPE::LOGOUT:
+        case T::LOGOUT:
+        {
+            Logout logout(in);
+            out=logout.handle();
+            RoomManager::getInstance().remove(conn,0);
+            decode();
+            conn->shutdown();
+            return;
+        }
         break;
-        case REQUEST_TYPE::FETCH_PLAYER_INFO:
+        case T::FETCH_PLAYER_INFO:
+        {
+            PlayerInfo playerInfo(in);
+            out=playerInfo.handle();
+        }
         break;
-        case REQUEST_TYPE::FETCH_LOBBY_INFO:
+        case T::FETCH_PLAYERS_INFO:
+        {
+            PlayersInfo playersInfo(in);
+            out=playersInfo.handle();
+        }
         break;
-        case REQUEST_TYPE::FETCH_ROOM_INFO:
+        case T::FETCH_LOBBY_INFO:
+        {
+            LobbyInfo lobbyInfo(in);
+            out=lobbyInfo.handle();
+        }
         break;
-        case REQUEST_TYPE::SIT_DOWN:
+        case T::FETCH_ROOM_INFO:
+        {
+            RoomInfo roomInfo(in);
+            out=roomInfo.handle();
+        }
         break;
-        case REQUEST_TYPE::LEAVE:
+        case T::SITDOWN:
         break;
-        case REQUEST_TYPE::READGO:
+        case T::LEAVE:
         break;
-        case REQUEST_TYPE::GIVEUP:
+        case T::READGO:
         break;
-        case REQUEST_TYPE::PLACECHESS:
+        case T::GIVEUP:
         break;
-        case REQUEST_TYPE::GAMEOVER_WINNER:
+        case T::PLACECHESS:
         break;
-        case REQUEST_TYPE::GAMEOVER_LOSER:
+        case T::GAMEOVER_WINNER:
         break;
-        case REQUEST_TYPE::SEND_MSG:
+        case T::GAMEOVER_LOSER:
+        break;
+        case T::SEND_MSG:
         break;
     }
     encode();
