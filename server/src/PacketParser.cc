@@ -101,11 +101,17 @@ PacketParser::dispatch(){
         break;
         case T::SITDOWN:
         {
-            in["id"]=conn->localAddress().toPort();
-            ORDER order=PairManager::getInstance().add(in["id"].as_number(),conn);
-            in["order"]=int(order);
-            NewRoom newRoom(in);
-            out=newRoom.handle();
+            if(in["id"].as_number()==0){
+                in["id"]=conn->localAddress().toPort();
+                ORDER order=PairManager::getInstance().add(in["id"].as_number(),conn);
+                in["order"]=int(order);
+                NewRoom newRoom(in);
+                out=newRoom.handle();
+            }else{
+                NewRival newRival(in);
+                out=newRival.handle();
+                PairManager::getInstance().add(in["id"].as_number(),conn);
+            }
         }
         break;
         case T::LEAVE:
@@ -114,13 +120,6 @@ PacketParser::dispatch(){
         break;
         case T::READGO:
         {
-            NewRival newRival(in);
-            out=newRival.handle();
-            Json torival;
-            torival["response_type"]=int(T::READYGO_SUCCESS);
-            torival["nickname"]=in["nickname"];
-            PairManager::getInstance().add(in["id"].as_number(),conn);
-            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
         }
         break;
         case T::PLACECHESS:
@@ -139,6 +138,11 @@ PacketParser::dispatch(){
             //originally the protos are GAMEOVER_WINNER/GAMEOVER_LOSER/GIVEUP
             GameResult gameResult(in);
             out=gameResult.handle();
+            Json toall;
+            in.erase("request_type");
+            toall=in;
+            in["response_type"]=int(T::BROADCAST_GAMERESULT_UPDATE);
+            RoomManager::getInstance().broadcast(0,toall.dumps());
         }
         break;
         case T::SEND_MSG:
