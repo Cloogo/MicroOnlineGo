@@ -5,11 +5,17 @@
 #include "Logout.h"
 #include "Regist.h"
 #include "RoomManager.h"
+#include "PairManager.h"
 #include "LobbyInfo.h"
 #include "RoomInfo.h"
 #include "PlayerInfo.h"
 #include "PlayersInfo.h"
 #include "GroupChat.h"
+#include "NewRoom.h"
+#include "NewRival.h"
+#include "ChessInfo.h"
+#include "SinglecastMsg.h"
+#include "GameResult.h"
 #include <redbud/parser/json_parser.h>
 #define T REQUEST_TYPE
 
@@ -37,6 +43,12 @@ PacketParser::dispatch(){
             out=account.handle();
         }
         break;
+        case T::NICKNAME_CHECK:
+        {
+            Nickname nickname(in);
+            out=nickname.handle();
+        }
+        break;
         case T::LOGIN:
         {
             Login login(in);
@@ -55,8 +67,6 @@ PacketParser::dispatch(){
             Logout logout(in);
             out=logout.handle();
             RoomManager::getInstance().remove(conn,0);
-            decode();
-            return;
         }
         break;
         case T::FETCH_PLAYER_INFO:
@@ -90,20 +100,57 @@ PacketParser::dispatch(){
         }
         break;
         case T::SITDOWN:
+        {
+            in["id"]=conn->localAddress().toPort();
+            ORDER order=PairManager::getInstance().add(in["id"].as_number(),conn);
+            in["order"]=int(order);
+            NewRoom newRoom(in);
+            out=newRoom.handle();
+        }
         break;
         case T::LEAVE:
+        {
+        }
         break;
         case T::READGO:
-        break;
-        case T::GIVEUP:
+        {
+            NewRival newRival(in);
+            out=newRival.handle();
+            Json torival;
+            torival["response_type"]=int(T::READYGO_SUCCESS);
+            torival["nickname"]=in["nickname"];
+            PairManager::getInstance().add(in["id"].as_number(),conn);
+            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
+        }
         break;
         case T::PLACECHESS:
+        {
+            ChessInfo chessInfo(in);
+            out=chessInfo.handle();
+            Json torival;
+            torival["id"]=in["id"];
+            torival["x"]=in["x"];
+            torival["y"]=in["y"];
+            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
+        }
         break;
-        case T::GAMEOVER_WINNER:
-        break;
-        case T::GAMEOVER_LOSER:
+        case T::UPDATE_GAMERESULT:
+        {
+            //originally the protos are GAMEOVER_WINNER/GAMEOVER_LOSER/GIVEUP
+            GameResult gameResult(in);
+            out=gameResult.handle();
+        }
         break;
         case T::SEND_MSG:
+        {
+            SinglecastMsg singlecastMsg(in);
+            out=singlecastMsg.handle();
+            Json torival;
+            torival["nickname"]=out["nickname"];
+            torival["msg"]=out["msg"];
+            torival["response_type"]=int(T::SINGLECAST_MSG);
+            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
+        }
         break;
     }
     encode();
