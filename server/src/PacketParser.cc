@@ -109,13 +109,18 @@ PacketParser::dispatch(){
                 out=newRoom.handle();
             }else{
                 NewRival newRival(in);
-                out=newRival.handle();
+                out=newRival.enter();
                 PairManager::getInstance().add(in["id"].as_number(),conn);
             }
         }
         break;
         case T::LEAVE:
         {
+            ORDER order=PairManager::getInstance().pos(conn,in["id"].as_number());
+            in["order"]=int(order);
+            NewRival newRival(in);
+            out=newRival.leave();
+            PairManager::getInstance().remove(conn,in["id"].as_number);
         }
         break;
         case T::READGO:

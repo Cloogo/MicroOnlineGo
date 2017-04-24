@@ -11,12 +11,13 @@ using namespace std;
 NewRival::NewRival(Json in){
     id=in["id"].as_number();
     nickname=in["nickname"].as_string();
+    order=ORDER(in["order"].as_number());
 }
 
 Json
-NewRival::handle(){
-    string stm0="update rooms set player2=\""+nickname+"\",status=\"onbattle\" where id="+to_string(id);
-    if(SqlStm::silence(stm1)){
+NewRival::enter(){
+    string stm0="update rooms set player2=\""+nickname+"\",status=\"waiting\" where id="+to_string(id);
+    if(SqlStm::silence(stm0)){
         in.erase("request_type");
         Json toall=in;
         toall["status"]="waiting";
@@ -26,6 +27,29 @@ NewRival::handle(){
         return out;
     }
     out["response_type"]=int(T::SITDOWN_FAILED);
+    out["reason"]="inner server error";
+    return out;
+}
+
+Json
+NewRival::leave(){
+    string stm0;
+    if(id==ORDER::LEFT){
+        stm0="update rooms set player1=\"\",status=\"waiting\" where id="+to_string(id);
+    }else if(id==ORDER::RIGHT){
+        stm0="update rooms set player2=\"\",status=\"waiting\" where id="+to_string(id);
+    }
+    if(SqlStm::silence(stm0)){
+        in.erase("request_type");
+        in.erase("order");
+        Json toall=in;
+        toall["status"]="waiting";
+        toall["response_type"]=int(T::BROADCAST_LEAVE);
+        RoomManager::getInstance().broadcast(0,toall.dumps());
+        out["response_type"]=int(T::LEAVE);
+        return out;
+    }
+    out["response_type"]=int(T::LEAVE_FAILED);
     out["reason"]="inner server error";
     return out;
 }
