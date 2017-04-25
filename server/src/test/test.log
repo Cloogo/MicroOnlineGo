@@ -1,0 +1,244 @@
+enum class REQUEST_TYPE{
+    ACCOUNT_CHECK=0,
+    FETCH_PLAYER_INFO,
+    FETCH_PLAYERS_INFO,
+    REGIST,
+    LOGIN,
+    LOGOUT=5,
+    FETCH_LOBBY_INFO,
+    FETCH_ROOM_INFO,
+    SITDOWN,
+    LEAVE,
+    READYGO=10,
+    PLACECHESS,
+    UPDATE_GAMERESULT,
+    SEND_MSG,
+    GROUP_CHAT,
+    NICKNAME_CHECK=15,
+};
+
+enum class RESPONSE_TYPE{
+    FETCH_PLAYER_INFO_SUCCESS=0,
+    FETCH_PLAYER_INFO_FAILED,
+    FETCH_PLAYERS_INFO_SUCCESS,
+    FETCH_PLAYERS_INFO_FAILED,
+    REGIST_SUCCESS,
+    REGIST_FAILED=5,
+    LOGIN_SUCCESS,
+    LOGIN_FAILED,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAILED,
+    FETCH_LOBBY_INFO_SUCCESS=10,
+    FETCH_LOBBY_INFO_FAILED,
+    FETCH_ROOM_INFO_SUCCESS,
+    FETCH_ROOM_INFO_FAILED,
+    BROADCAST_SITDOWN,
+    SITDOWN_SUCCESS=15,
+    SITDOWN_FAILED,
+    BROADCAST_LEAVE,
+    LEAVE_SUCCESS,
+    LEAVE_FAILED,
+    SINGLECAST_READYGO=20,
+    BROADCAST_READYGO,
+    READYGO_SUCCESS,
+    READYGO_FAILED,
+    PLACECHESS_SUCCESS,
+    PLACECHESS_FAILED=25,
+    SINGLECAST_PLACECHESS,
+    UPDATE_GAMERESULT_SUCCESS,
+    UPDATE_GAMERESULT_FAILED,
+    SEND_MSG_SUCCESS,
+    SEND_MSG_FAILED=30,
+    BROADCAST_SOMEONE_UP,
+    BROADCAST_SOMEONE_DOWN,
+    GROUP_CHAT_MSG,
+    GROUP_CHAT_SUCCESS,
+    GROUP_CHAT_FAILED=35,
+    SINGLECAST_CHAT,
+    BROADCAST_GAMERESULT_UPDATE
+};
+
+
+"account check"
+{"request_type":0,"account":"test0"}
+
+"regist"
+{"request_type":3,"account":"test0","nickname":"test0","passwd":"test0"}
+{"request_type":3,"account":"test1","nickname":"test1","passwd":"test1"}
+
+"login"
+{"request_type":4,"account":"test0","passwd":"test0"}
+{"request_type":4,"account":"test1","passwd":"test1"}
+
+"fetch_player"
+{"request_type":1,"account":"test0"}
+{"request_type":1,"account":"test1"}
+
+"logout"
+{"request_type":5,"account":"test0"}
+{"request_type":5,"account":"test1"}
+
+"fetch_players"
+{"request_type":2}
+
+"groupchat"
+{"request_type":14,"nickname":"test0","msg":"Hello all!"}
+{"request_type":14,"nickname":"test1","msg":"Hello all!"}
+
+"fetch room info"
+{"request_type":7}
+
+"create a new room"
+{"request_type":8,"id":0,"nickname":"test0","name":"go0"}
+"find rival/enter room"
+{"request_type":8,"id":60000,"nickname":"test1","name":"go0"}
+
+"leave"
+{"request_type":9,"id":,"nickname":"test0"}
+{"request_type":9,"id":,"nickname":"test1"}
+
+"readygo"
+{"request_type":10,"id":60000,"nickname":"test0"}
+{"request_type":10,"id":60000,"nickname":"test1"}
+
+"placechess"
+{"request_type":11,"id":60000,"x":15,"y":15}
+
+"update gameresult"
+{"request_type":12,"account":"test0","level":10,"integral":100}
+{"request_type":12,"account":"test1","level":1,"integral":10}
+
+"send msg"
+{"request_type":13,"nickname":"test0","msg":"Hello test1","id":6000}
+{"request_type":13,"nickname":"test1","msg":"Hello test0","id":6000}
+
+
+
+client 1:
+{"request_type":0,"account":"test0"}
+{"request_type":3,"account":"test0","nickname":"test0","passwd":"test0"}
+{"request_type":4,"account":"test0","passwd":"test0"}
+{"request_type":1,"account":"test0"}
+{"request_type":2}
+{"request_type":7}
+{"request_type":14,"nickname":"test0","msg":"Hello all!"}
+{"request_type":8,"id":0,"nickname":"test0","name":"go0"}
+{"request_type":10,"id":60000,"nickname":"test0"}
+{"request_type":11,"id":60000,"x":15,"y":15}
+{"request_type":13,"nickname":"test0","msg":"Hello test1","id":6000}
+{"request_type":12,"account":"test0","level":10,"integral":100}
+{"request_type":9,"id":,"nickname":"test0"}
+
+client 2:
+{"request_type":3,"account":"test1","nickname":"test1","passwd":"test1"}
+{"request_type":4,"account":"test1","passwd":"test1"}
+{"request_type":1,"account":"test1"}
+{"request_type":2}
+{"request_type":7}
+{"request_type":14,"nickname":"test1","msg":"Hello all!"}
+{"request_type":8,"id":60000,"nickname":"test1","name":"go0"}
+{"request_type":10,"id":60000,"nickname":"test1"}
+{"request_type":11,"id":60000,"x":15,"y":15}
+{"request_type":13,"nickname":"test1","msg":"Hello test0","id":6000}
+{"request_type":12,"account":"test1","level":1,"integral":10}
+
+server:
+20170425 12:06:58.319888Z 24269 INFO  pid = 24269 - main.cc:11
+20170425 12:07:28.903734Z 24269 INFO  TcpServer::newConnection [GoServer] - new connection [GoServer-0.0.0.0:60000#1] from 127.0.0.1:37638 - TcpServer.cc:84
+20170425 12:07:28.903770Z 24269 INFO  GoServer -127.0.0.1:37638->127.0.0.1:60000 is UP - GoServer.cc:27
+20170425 12:07:31.940789Z 24269 INFO  TcpServer::newConnection [GoServer] - new connection [GoServer-0.0.0.0:60000#2] from 127.0.0.1:37640 - TcpServer.cc:84
+20170425 12:07:31.940818Z 24269 INFO  GoServer -127.0.0.1:37640->127.0.0.1:60000 is UP - GoServer.cc:27
+20170425 12:07:57.896532Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 37 content: {"request_type":0,"account":"test0"}
+ - GoServer.cc:50
+20170425 12:07:57.896932Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 19 content: {"response_type":1} - GoServer.cc:69
+20170425 12:08:04.616518Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 73 content: {"request_type":3,"account":"test0","nickname":"test0","passwd":"test0"}
+ - GoServer.cc:50
+20170425 12:08:04.648644Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 19 content: {"response type":4} - GoServer.cc:69
+20170425 12:08:10.336472Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 73 content: {"request_type":3,"account":"test1","nickname":"test1","passwd":"test1"}
+ - GoServer.cc:50
+20170425 12:08:10.371729Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 19 content: {"response type":4} - GoServer.cc:69
+20170425 12:08:15.728585Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 54 content: {"request_type":4,"account":"test0","passwd":"test0"}
+ - GoServer.cc:50
+20170425 12:08:15.774098Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 19 content: {"response_type":6} - GoServer.cc:69
+20170425 12:08:20.768536Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 54 content: {"request_type":4,"account":"test1","passwd":"test1"}
+ - GoServer.cc:50
+20170425 12:08:20.808620Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 80 content: {"integral":0,"level":1,"nickname":"test1","response_type":31,"status":"Online"} - GoServer.cc:69
+20170425 12:08:20.808678Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 19 content: {"response_type":6} - GoServer.cc:69
+20170425 12:08:30.376530Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 37 content: {"request_type":1,"account":"test0"}
+ - GoServer.cc:50
+20170425 12:08:30.376935Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 78 content: {"account":"test0","integral":0,"level":1,"response_type":0,"status":"Online"} - GoServer.cc:69
+20170425 12:08:35.672552Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 37 content: {"request_type":1,"account":"test1"}
+ - GoServer.cc:50
+20170425 12:08:35.672983Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 78 content: {"account":"test1","integral":0,"level":1,"response_type":0,"status":"Online"} - GoServer.cc:69
+20170425 12:08:54.104637Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 19 content: {"request_type":2}
+ - GoServer.cc:50
+20170425 12:08:54.105424Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 212 content: {"players_list":[{"account":"test0","integral":0,"level":1,"nickname":"test0","status":"Online"},{"account":"test1","integral":0,"level":1,"nickname":"test1","status":"Online"}],"players_num":2,"response_type":2} - GoServer.cc:69
+20170425 12:08:56.016546Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 19 content: {"request_type":2}
+ - GoServer.cc:50
+20170425 12:08:56.017322Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 212 content: {"players_list":[{"account":"test0","integral":0,"level":1,"nickname":"test0","status":"Online"},{"account":"test1","integral":0,"level":1,"nickname":"test1","status":"Online"}],"players_num":2,"response_type":2} - GoServer.cc:69
+20170425 12:09:07.040707Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 19 content: {"request_type":7}
+ - GoServer.cc:50
+20170425 12:09:07.041420Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 34 content: {"response_type":12,"rooms_num":0} - GoServer.cc:69
+20170425 12:09:08.600697Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 19 content: {"request_type":7}
+ - GoServer.cc:50
+20170425 12:09:08.601339Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 34 content: {"response_type":12,"rooms_num":0} - GoServer.cc:69
+20170425 12:09:17.009709Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 58 content: {"request_type":14,"nickname":"test0","msg":"Hello all!"}
+ - GoServer.cc:50
+20170425 12:09:17.009755Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 58 content: {"msg":"Hello all!","nickname":"test0","response_type":33} - GoServer.cc:69
+20170425 12:09:17.009783Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 58 content: {"msg":"Hello all!","nickname":"test0","response_type":33} - GoServer.cc:69
+20170425 12:09:17.009811Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 20 content: {"response_type":34} - GoServer.cc:69
+20170425 12:09:32.809192Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 58 content: {"request_type":14,"nickname":"test1","msg":"Hello all!"}
+ - GoServer.cc:50
+20170425 12:09:32.809231Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 58 content: {"msg":"Hello all!","nickname":"test1","response_type":33} - GoServer.cc:69
+20170425 12:09:32.809266Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 58 content: {"msg":"Hello all!","nickname":"test1","response_type":33} - GoServer.cc:69
+20170425 12:09:32.809292Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 20 content: {"response_type":34} - GoServer.cc:69
+20170425 12:09:46.112527Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 58 content: {"request_type":8,"id":0,"nickname":"test0","name":"go0"}
+ - GoServer.cc:50
+20170425 12:09:46.159928Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 82 content: {"id":60000,"name":"go0","nickname":"test0","response_type":14,"status":"waiting"} - GoServer.cc:69
+20170425 12:09:46.159973Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 82 content: {"id":60000,"name":"go0","nickname":"test0","response_type":14,"status":"waiting"} - GoServer.cc:69
+20170425 12:09:46.160005Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 20 content: {"response_type":15} - GoServer.cc:69
+20170425 12:09:52.104577Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 62 content: {"request_type":8,"id":60000,"nickname":"test1","name":"go0"}
+ - GoServer.cc:50
+20170425 12:09:52.138709Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 79 content: {"id":60000,"nickname":"test1","order":1,"response_type":14,"status":"waiting"} - GoServer.cc:69
+20170425 12:09:52.138765Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 79 content: {"id":60000,"nickname":"test1","order":1,"response_type":14,"status":"waiting"} - GoServer.cc:69
+20170425 12:09:52.138803Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 20 content: {"response_type":15} - GoServer.cc:69
+20170425 12:10:00.488592Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 50 content: {"request_type":10,"id":60000,"nickname":"test0"}
+ - GoServer.cc:50
+20170425 12:10:00.488633Z 24269 INFO  Handshake: stm0: update rooms set readygo1="yes" where id=60000 - Handshake.cc:27
+20170425 12:10:00.530162Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 50 content: {"id":60000,"nickname":"test0","response_type":20} - GoServer.cc:69
+20170425 12:10:00.530216Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 20 content: {"response_type":22} - GoServer.cc:69
+20170425 12:10:07.576548Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 50 content: {"request_type":10,"id":60000,"nickname":"test1"}
+ - GoServer.cc:50
+20170425 12:10:07.576579Z 24269 INFO  Handshake: stm0: update rooms set readygo2="yes" where id=60000 - Handshake.cc:27
+20170425 12:10:07.620498Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 50 content: {"id":60000,"nickname":"test1","response_type":20} - GoServer.cc:69
+20170425 12:10:07.620549Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 20 content: {"response_type":22} - GoServer.cc:69
+20170425 12:11:16.160684Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 45 content: {"request_type":11,"id":60000,"x":15,"y":15}
+ - GoServer.cc:50
+20170425 12:11:16.160747Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 26 content: {"id":60000,"x":15,"y":15} - GoServer.cc:69
+20170425 12:11:16.160790Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 45 content: {"id":60000,"response_type":24,"x":15,"y":15} - GoServer.cc:69
+20170425 12:11:26.432635Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 45 content: {"request_type":11,"id":60000,"x":15,"y":15}
+ - GoServer.cc:50
+20170425 12:11:26.432677Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 26 content: {"id":60000,"x":15,"y":15} - GoServer.cc:69
+20170425 12:11:26.432706Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 45 content: {"id":60000,"response_type":24,"x":15,"y":15} - GoServer.cc:69
+20170425 12:11:37.368774Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 69 content: {"request_type":13,"nickname":"test0","msg":"Hello test1","id":6000}
+ - GoServer.cc:50
+20170425 12:11:37.368816Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 59 content: {"msg":"Hello test1","nickname":"test0","response_type":29} - GoServer.cc:69
+20170425 12:11:50.192625Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 69 content: {"request_type":13,"nickname":"test1","msg":"Hello test0","id":6000}
+ - GoServer.cc:50
+20170425 12:11:50.192672Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 59 content: {"msg":"Hello test0","nickname":"test1","response_type":29} - GoServer.cc:69
+20170425 12:11:58.512423Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 64 content: {"request_type":12,"account":"test0","level":10,"integral":100}
+ - GoServer.cc:50
+20170425 12:11:58.556238Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 64 content: {"account":"test0","integral":100,"level":10,"response_type":37} - GoServer.cc:69
+20170425 12:11:58.556282Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 64 content: {"account":"test0","integral":100,"level":10,"response_type":37} - GoServer.cc:69
+20170425 12:11:58.556307Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 20 content: {"response_type":27} - GoServer.cc:69
+20170425 12:12:05.288636Z 24269 INFO  REQUEST -127.0.0.1:37640->127.0.0.1:60000 len: 62 content: {"request_type":12,"account":"test1","level":1,"integral":10}
+ - GoServer.cc:50
+20170425 12:12:05.336144Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37638 len: 62 content: {"account":"test1","integral":10,"level":1,"response_type":37} - GoServer.cc:69
+20170425 12:12:05.336190Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 62 content: {"account":"test1","integral":10,"level":1,"response_type":37} - GoServer.cc:69
+20170425 12:12:05.336215Z 24269 INFO  RESPONSE -127.0.0.1:60000->127.0.0.1:37640 len: 20 content: {"response_type":27} - GoServer.cc:69
+20170425 12:12:37.096770Z 24269 INFO  REQUEST -127.0.0.1:37638->127.0.0.1:60000 len: 44 content: {"request_type":9,"id":,"nickname":"test0"}
+ - GoServer.cc:50
+Exception : [ !Token::digit(r.now()) ], json_parser.cc : 103
+   Expect : Valid JSON value., Actual : 44 at postion 23.
+terminate called after throwing an instance of 'redbud::ParseException'
+Aborted
