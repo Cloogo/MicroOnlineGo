@@ -15,7 +15,7 @@ GameResult::GameResult(Json in){
 
 Json
 GameResult::handle(){
-    string stm0="update users set level="+to_string(level)+",integer="+to_string(integer)+" where account=\""+account+"\"";
+    string stm0="update users set level="+to_string(level)+",integral="+to_string(integral)+" where account=\""+account+"\"";
     if(SqlStm::silence(stm0)){
         out["response_type"]=int(T::UPDATE_GAMERESULT_SUCCESS);
     }else{
