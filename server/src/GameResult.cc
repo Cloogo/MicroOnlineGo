@@ -10,7 +10,7 @@ using namespace std;
 GameResult::GameResult(Json in){
     account=in["account"].as_string();
     level=in["level"].as_number();
-    integer=in["integer"].as_number();
+    integral=in["integral"].as_number();
 }
 
 Json

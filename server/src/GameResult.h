@@ -12,6 +12,6 @@ private:
     redbud::parser::json::Json out;
     std::string account;
     int level;
-    int integer;
+    int integral;
 };
 #endif
