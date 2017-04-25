@@ -9,9 +9,9 @@ using namespace redbud::parser::json;
 using namespace std;
 
 NewRival::NewRival(Json in){
-    id=in["id"].as_number();
+    id=int(in["id"].as_number());
     nickname=in["nickname"].as_string();
-    order=ORDER(in["order"].as_number());
+    order=ORDER(int(in["order"].as_number()));
 }
 
 Json

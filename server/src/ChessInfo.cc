@@ -6,9 +6,9 @@
 using namespace redbud::parser::json;
 
 ChessInfo::ChessInfo(Json in){
-    id=in["id"].as_number();
-    x=in["x"].as_number();
-    y=in["y"].as_number();
+    id=int(in["id"].as_number());
+    x=int(in["x"].as_number());
+    y=int(in["y"].as_number());
 }
 
 Json

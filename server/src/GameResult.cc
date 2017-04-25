@@ -8,9 +8,9 @@ using namespace redbud::parser::json;
 using namespace std;
 
 GameResult::GameResult(Json in){
-    account=in["account"].as_string();
-    level=in["level"].as_number();
-    integral=in["integral"].as_number();
+    account=int(in["account"].as_string());
+    level=int(in["level"].as_number());
+    integral=int(in["integral"].as_number());
 }
 
 Json

@@ -38,7 +38,7 @@ PacketParser::decode(){
 void
 PacketParser::dispatch(){
     decode();
-    switch(T(in["request_type"].as_number())){
+    switch(T(int(in["request_type"].as_number()))){
         case T::ACCOUNT_CHECK:
         {
             Account account(in);
@@ -105,7 +105,7 @@ PacketParser::dispatch(){
         {
             ORDER order=PairManager::getInstance().add(conn,in["id"].as_number());
             in["order"]=int(order);
-            if(in["id"].as_number()==0){
+            if(int(in["id"].as_number())==0){
                 in["id"]=conn->localAddress().toPort();
                 NewRoom newRoom(in);
                 out=newRoom.handle();

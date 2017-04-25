@@ -9,7 +9,7 @@ using namespace redbud::parser::json;
 using namespace std;
 
 NewRoom::NewRoom(Json in){
-    id=in["id"].as_number();
+    id=int(in["id"].as_number());
     nickname=in["nickname"].as_string();
     name=in["name"].as_string();
 }

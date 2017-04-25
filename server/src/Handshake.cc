@@ -9,7 +9,7 @@ using namespace redbud::parser::json;
 using namespace std;
 
 Handshake::Handshake(Json in){
-    id=in["id"].as_number();
+    id=int(in["id"].as_number());
     nickname=in["nickname"].as_string();
     order=ORDER(int(in["order"].as_number()));
 }
