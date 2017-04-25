@@ -112,8 +112,8 @@ PacketParser::dispatch(){
             }else{
                 NewRival newRival(in);
                 out=newRival.enter();
-                PairManager::getInstance().add(conn,in["id"].as_number());
             }
+            PairManager::getInstance().add(conn,in["id"].as_number());
         }
         break;
         case T::LEAVE:
@@ -127,7 +127,7 @@ PacketParser::dispatch(){
         break;
         case T::READYGO:
         {
-            ORDER order=PairManager::getInstance().pos(conn,(in["id"].as_number()));
+            ORDER order=PairManager::getInstance().pos(conn,in["id"].as_number());
             in["order"]=int(order);
             Handshake handShake(in);
             out=handShake.handle();

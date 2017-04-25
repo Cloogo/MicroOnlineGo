@@ -17,7 +17,9 @@ main(){
     j3["hhhh"]=111111111;
     Json j4;
     Json j5;
+    j5["list"]=j3["list"];
     j5["play_num"]=10;
+    j5["test"]=j3["help"];
     string name="Unit";
     j4.push_back(Json::Object{{"Test",name},{"passed",100}});
     j4.push_back(Json::Object{{"Test","Mock"},{"passed",10}});
@@ -28,4 +30,12 @@ main(){
     string msg="Hello world!";
     Json j6=Json::parse("{\"name\":\"Test\",\"msg\":\"Hello world\"}");
     cout<<j6.dumps()<<endl;
+    Json j7=Json::Object{
+        {"name",""}
+    };
+    cout<<j7.dumps()<<endl;
+    Json j8;
+    j8["n"]=10;
+    int id=j8["n"].as_number();
+    cout<<to_string(id)<<endl;
 }
