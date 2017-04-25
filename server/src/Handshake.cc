@@ -29,11 +29,14 @@ Handshake::handle(){
         string stm1="select * from rooms where id="+to_string(id);
         string stm2="select * from rooms where id="+to_string(id);
         if(SqlStm::getField(stm1,"readygo1")=="yes"&&SqlStm::getField(stm2,"readygo2")=="yes"){
-            Json toall;
-            toall["id"]=id;
-            toall["nickname"]=nickname;
-            toall["status"]="onbattle";
-            toall["response_type"]=int(T::BROADCAST_READYGO);
+            string stm3="update rooms set status=\"onbattle\" where id"+to_string(id);
+            if(SqlStm::silence(stm3)){
+                Json toall;
+                toall["id"]=id;
+                toall["nickname"]=nickname;
+                toall["status"]="onbattle";
+                toall["response_type"]=int(T::BROADCAST_READYGO);
+            }
         }
         out["response_type"]=int(T::READYGO_SUCCESS);
         return out;
