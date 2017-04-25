@@ -17,6 +17,8 @@ id int,
 name varchar(10),
 player1 varchar(10),
 player2 varchar(10),
+readygo1 varchar(3),
+readygo2 varchar(3),
 status varchar(10),
 primary key(id)
 );
