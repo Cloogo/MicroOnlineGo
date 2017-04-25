@@ -125,7 +125,7 @@ PacketParser::dispatch(){
             PairManager::getInstance().remove(conn,in["id"].as_number());
         }
         break;
-        case T::READGO:
+        case T::READYGO:
         {
             ORDER order=PairManager::getInstance().pos(conn,(in["id"].as_number()));
             in["order"]=int(order);
