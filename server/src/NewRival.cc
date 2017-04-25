@@ -16,7 +16,7 @@ NewRival::NewRival(Json in){
 
 Json
 NewRival::enter(){
-    string stm0="update rooms set player2=\""+nickname+"\",status=\"waiting\" where id="+to_string(id);
+    string stm0="update rooms set player2=\""+nickname+"\",readygo2=\"no\",status=\"waiting\" where id="+to_string(id);
     if(SqlStm::silence(stm0)){
         Json toall;
         toall["id"]=id;
@@ -37,9 +37,9 @@ Json
 NewRival::leave(){
     string stm0;
     if(order==ORDER::LEFT){
-        stm0="update rooms set player1=\"\",status=\"waiting\" where id="+to_string(id);
+        stm0="update rooms set player1=\"\",readygo1=\"no\",status=\"waiting\" where id="+to_string(id);
     }else if(order==ORDER::RIGHT){
-        stm0="update rooms set player2=\"\",status=\"waiting\" where id="+to_string(id);
+        stm0="update rooms set player2=\"\",readygo2=\"no\",status=\"waiting\" where id="+to_string(id);
     }
     if(SqlStm::silence(stm0)){
         Json toall;
