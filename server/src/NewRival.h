@@ -5,7 +5,7 @@
 
 class NewRival{
 public:
-    NewRival(redbud::parser::json in);
+    NewRival(redbud::parser::json::Json in);
     ~NewRival(){}
     redbud::parser::json::Json enter();
     redbud::parser::json::Json leave();

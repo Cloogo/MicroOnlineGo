@@ -5,6 +5,7 @@
 #define T RESPONSE_TYPE
 
 using namespace redbud::parser::json;
+using namespace std;
 
 GameResult::GameResult(Json in){
     account=in["account"].as_string();
@@ -14,7 +15,7 @@ GameResult::GameResult(Json in){
 
 Json
 GameResult::handle(){
-    std::string stm0="update users set level="+to_string(level)+",integer="+to_string(integer)+" where account=\""+account+"\"";
+    string stm0="update users set level="+to_string(level)+",integer="+to_string(integer)+" where account=\""+account+"\"";
     if(SqlStm::silence(stm0)){
         out["response_type"]=int(T::UPDATE_GAMERESULT_SUCCESS);
     }else{

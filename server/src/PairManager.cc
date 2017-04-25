@@ -5,8 +5,8 @@ using namespace muduo;
 using namespace muduo::net;
 
 pthread_once_t PairManager::ponce=PTHREAD_ONCE_INIT;
-RoomManager* PairManager::instance=NULL;
-pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
+PairManager* PairManager::instance=NULL;
+pthread_mutex_t pm_mutex=PTHREAD_MUTEX_INITIALIZER;
 
 void
 PairManager::setCb(const msgCb& sendBack_){
@@ -14,7 +14,7 @@ PairManager::setCb(const msgCb& sendBack_){
 }
 
 bool
-PairManager::find(const in id){
+PairManager::find(const int id){
     Iter i=pairsList.find(id);
     if(i!=pairsList.end()){
         return true;
@@ -22,26 +22,30 @@ PairManager::find(const in id){
     return false;
 }
 
-void
+ORDER
 PairManager::add(const TcpConnectionPtr& conn,const int id){
-    pthread_mutex_lock(&mutex);
+    ORDER order=ORDER::LEFT;
+    pthread_mutex_lock(&pm_mutex);
     if(find(id)){
         ConnPair& connPair=pairsList[id];
         if(connPair.first==nullptr){
             connPair.first=conn;
         }else{
             connPair.second=conn;
+            order=ORDER::RIGHT;
         }
     }else{
         ConnPair connPair;
         connPair.first=conn;
         pairsList[id]=connPair;
     }
+    pthread_mutex_unlock(&pm_mutex);
+    return order;
 }
 
 void
 PairManager::remove(const TcpConnectionPtr& conn,const int id){
-    pthread_mutex_lock(&mutex);
+    pthread_mutex_lock(&pm_mutex);
     if(find(id)){
         ConnPair& connPair=pairsList[id];
         if(connPair.first==conn){
@@ -53,25 +57,35 @@ PairManager::remove(const TcpConnectionPtr& conn,const int id){
             pairsList.erase(id);
         }
     }
-    pthread_mutex_unlock(&mutex);
+    pthread_mutex_unlock(&pm_mutex);
 }
 
 int
 PairManager::match(){
-    pthread_mutex_lock(&mutex);
+    pthread_mutex_lock(&pm_mutex);
     for(Iter i=pairsList.begin();i!=pairsList.end();++i){
         if(i->second.first==nullptr||i->second.second==nullptr){
-            pthread_mutex_unlock(&mutex);
+            pthread_mutex_unlock(&pm_mutex);
             return i->first;
         }
     }
-    pthread_mutex_unlock(&mutex);
+    pthread_mutex_unlock(&pm_mutex);
     return -1;
+}
+
+ORDER
+PairManager::pos(const TcpConnectionPtr& self,const int id){
+    ConnPair& connPair=pairsList[id];
+    if(connPair.first==self){
+        return ORDER::LEFT;
+    }else if(connPair.second==self){
+        return ORDER::RIGHT;
+    }
 }
 
 void
 PairManager::singlecast(const TcpConnectionPtr& self,const int id,std::string msg){
-    pthread_mutex_lock(&mutex);
+    pthread_mutex_lock(&pm_mutex);
     if(find(id)){
         ConnPair connPair=pairsList[id];
         if(connPair.first!=self){
@@ -80,5 +94,5 @@ PairManager::singlecast(const TcpConnectionPtr& self,const int id,std::string ms
             sendBack(connPair.second,msg);
         }
     }
-    pthread_mutex_unlock(&mutex);
+    pthread_mutex_unlock(&pm_mutex);
 }

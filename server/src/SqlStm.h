@@ -32,6 +32,16 @@ public:
         SqlManager::getInstance().putConn(sqlConn);
         return isOk;
     }
+    static std::string getField(std::string stm,std::string name){
+        Connection_T sqlConn=SqlManager::getInstance().getConn();
+        ResultSet_T r=Connection_executeQuery(sqlConn,stm.c_str());
+        if(ResultSet_next(r)){
+            std::string s(ResultSet_getStringByName(r,name.c_str()));
+            return s;
+        }
+        return "";
+    }
+
     static redbud::parser::json::Json getUser(std::string stm){
         redbud::parser::json::Json user;
         Connection_T sqlConn=SqlManager::getInstance().getConn();

@@ -9,7 +9,7 @@ using namespace std;
 int
 main(){
     Json j3;
-    j3["project"] = "redbud";
+    j3["project"] = "redbud test";
     j3["file"] = 10;
     j3["finished"] = false;
     j3["list"] = Json::Array{ Json::Object{{"Name","a"},{"age",20}},{"json.cc" }};
@@ -25,4 +25,7 @@ main(){
         j5["players"]=j4;
     }
     cout<<j5.dumps()<<endl;
+    string msg="Hello world!";
+    Json j6=Json::parse("{\"name\":\"Test\",\"msg\":\"Hello world\"}");
+    cout<<j6.dumps()<<endl;
 }

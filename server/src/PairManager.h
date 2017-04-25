@@ -1,5 +1,6 @@
 #ifndef _PAIRMANAGER_H
 #define _PAIRMANAGER_H
+#include "Proto.h"
 #include <pthread.h>
 #include <map>
 #include <set>
@@ -20,14 +21,17 @@ public:
     static void init(){
         instance=new PairManager();
     }
-    void add(const muduo::net::TcpConnectionPtr& conn,const int id);
+    void setCb(const msgCb& sendBack_);
+    bool find(const int id);
+    ORDER add(const muduo::net::TcpConnectionPtr& conn,const int id);
     void remove(const muduo::net::TcpConnectionPtr& conn,const int id);
     int match();
+    ORDER pos(const muduo::net::TcpConnectionPtr& self,const int id);
     void singlecast(const muduo::net::TcpConnectionPtr& conn,const int id,std::string msg);
     static pthread_once_t ponce;
     static PairManager* instance;
 private:
-    typedef std::pair<muduo::net::TcpConnectionPtr,muduo::net::TcpConnectionPtr>>ConnPair;
+    typedef std::pair<muduo::net::TcpConnectionPtr,muduo::net::TcpConnectionPtr>ConnPair;
     typedef std::map<int,ConnPair>ConnPairsList;
     typedef ConnPairsList::iterator Iter;
     ConnPairsList pairsList;

@@ -6,12 +6,16 @@
 using namespace redbud::parser::json;
 
 ChessInfo::ChessInfo(Json in){
+    id=in["id"].as_number();
+    x=in["x"].as_number();
+    y=in["y"].as_number();
 }
 
 Json
 ChessInfo::handle(){
-    in.erase("request_type");
-    out=in;
-    out["response_type"]=int(T::PLAYCHESS_SUCCESS);
+    out["id"]=id;
+    out["x"]=x;
+    out["y"]=y;
+    out["response_type"]=int(T::PLACECHESS_SUCCESS);
     return out;
 }

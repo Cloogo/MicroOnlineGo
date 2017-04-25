@@ -1,11 +1,12 @@
 #include "NewRoom.h"
 #include "Proto.h"
 #include "SqlStm.h"
+#include "RoomManager.h"
 
 #define T RESPONSE_TYPE
 
 using namespace redbud::parser::json;
-
+using namespace std;
 
 NewRoom::NewRoom(Json in){
     id=in["id"].as_number();
@@ -15,10 +16,12 @@ NewRoom::NewRoom(Json in){
 
 Json
 NewRoom::handle(){
-    string stm0="insert into rooms value(+"to_string(id)+",\""+name+"\",\""+nickname+"\",\"\",\"waiting\")";
+    string stm0="insert into rooms value("+to_string(id)+",\""+name+"\",\""+nickname+"\",\"\",\"waiting\")";
     if(SqlStm::silence(stm0)){
-        in.erase("request_type");
-        Json toall=in;
+        Json toall;
+        toall["id"]=id;
+        toall["nickname"]=nickname;
+        toall["name"]=name;
         toall["status"]="waiting";
         toall["response_type"]=int(T::BROADCAST_SITDOWN);
         RoomManager::getInstance().broadcast(0,toall.dumps());

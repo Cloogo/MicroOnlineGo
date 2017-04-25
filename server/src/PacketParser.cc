@@ -1,6 +1,7 @@
 #include "PacketParser.h"
 #include "Proto.h"
 #include "Account.h"
+#include "Nickname.h"
 #include "Login.h"
 #include "Logout.h"
 #include "Regist.h"
@@ -13,6 +14,7 @@
 #include "GroupChat.h"
 #include "NewRoom.h"
 #include "NewRival.h"
+#include  "Handshake.h"
 #include "ChessInfo.h"
 #include "SinglecastMsg.h"
 #include "GameResult.h"
@@ -103,14 +105,14 @@ PacketParser::dispatch(){
         {
             if(in["id"].as_number()==0){
                 in["id"]=conn->localAddress().toPort();
-                ORDER order=PairManager::getInstance().add(in["id"].as_number(),conn);
+                ORDER order=PairManager::getInstance().add(conn,in["id"].as_number());
                 in["order"]=int(order);
                 NewRoom newRoom(in);
                 out=newRoom.handle();
             }else{
                 NewRival newRival(in);
                 out=newRival.enter();
-                PairManager::getInstance().add(in["id"].as_number(),conn);
+                PairManager::getInstance().add(conn,in["id"].as_number());
             }
         }
         break;
@@ -120,11 +122,20 @@ PacketParser::dispatch(){
             in["order"]=int(order);
             NewRival newRival(in);
             out=newRival.leave();
-            PairManager::getInstance().remove(conn,in["id"].as_number);
+            PairManager::getInstance().remove(conn,in["id"].as_number());
         }
         break;
         case T::READGO:
         {
+            ORDER order=PairManager::getInstance().pos(conn,(in["id"].as_number()));
+            in["order"]=int(order);
+            Handshake handShake(in);
+            out=handShake.handle();
+            Json torival;
+            torival["response_type"]=int(RESPONSE_TYPE::SINGLECAST_READYGO);
+            torival["id"]=in["id"];
+            torival["nickname"]=in["nickname"];
+            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
         }
         break;
         case T::PLACECHESS:
@@ -146,7 +157,7 @@ PacketParser::dispatch(){
             Json toall;
             in.erase("request_type");
             toall=in;
-            in["response_type"]=int(T::BROADCAST_GAMERESULT_UPDATE);
+            in["response_type"]=int(RESPONSE_TYPE::BROADCAST_GAMERESULT_UPDATE);
             RoomManager::getInstance().broadcast(0,toall.dumps());
         }
         break;
@@ -157,7 +168,7 @@ PacketParser::dispatch(){
             Json torival;
             torival["nickname"]=out["nickname"];
             torival["msg"]=out["msg"];
-            torival["response_type"]=int(T::SINGLECAST_MSG);
+            torival["response_type"]=int(RESPONSE_TYPE::SINGLECAST_CHAT);
             PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
         }
         break;

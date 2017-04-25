@@ -20,7 +20,8 @@ Json
 Logout::handle(){
     string stm0="update users set status=\"Offline\" where account=\""+account+"\"";
     if(SqlStm::silence(stm0)){
-        Json user=SqlStm::getUser(stm0);
+        Json user;
+        user["account"]=account;
         user["response_type"]=int(T::BROADCAST_SOMEONE_DOWN);
         auto msg=user.dumps();
         RoomManager::getInstance().broadcast(0,msg);

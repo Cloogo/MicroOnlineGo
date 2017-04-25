@@ -1,6 +1,7 @@
 #ifndef _PACKETPARSER_H
 #define _PACKETPARSER_H
 #include "RoomManager.h"
+#include "PairManager.h"
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 #include <muduo/net/TcpConnection.h>
@@ -14,6 +15,7 @@ public:
                           const std::string msg_,
                           const msgCb& msgCb_):conn(conn_),msg(msg_),sendBack(msgCb_){
             RoomManager::getInstance().setCb(sendBack);
+            PairManager::getInstance().setCb(sendBack);
     }
 
     ~PacketParser(){}

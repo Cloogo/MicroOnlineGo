@@ -3,9 +3,6 @@
 #include "SqlManager.h"
 #include "SqlStm.h"
 #include "RoomManager.h"
-#include <zdb/zdb.h>
-#include <zdb/Exception.h>
-#include <zdb/Connection.h>
 
 #define T RESPONSE_TYPE
 using namespace redbud::parser::json;

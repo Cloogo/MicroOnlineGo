@@ -1,16 +1,15 @@
-#ifndef _CHESSINFO_H
-#define _CHESSINFO_H
+#ifndef _HANDSHAKE_H
+#define _HANDSHAKE_H
 #include <redbud/parser/json_parser.h>
 
-class ChessInfo{
+class Handshake{
 public:
-    ChessInfo(redbud::parser::json::Json in);
-    ~ChessInfo(){}
+    Handshake(redbud::parser::json::Json in);
+    ~Handshake(){}
     redbud::parser::json::Json handle();
 private:
     redbud::parser::json::Json out;
     int id;
-    int x;
-    int y;
+    std::string nickname;
 };
 #endif

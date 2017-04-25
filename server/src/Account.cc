@@ -18,9 +18,9 @@ Json
 Account::check(){
     std::string stm="select * from users where account=\""+account+"\"";
     if(SqlStm::isExisted(stm)){
-        out["response type"]=EXISTED;
+        out["response_type"]=EXISTED;
     }else{
-        out["response type"]=NOT_EXISTED;
+        out["response_type"]=NOT_EXISTED;
     }
     return out;
 }

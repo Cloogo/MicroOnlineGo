@@ -21,7 +21,7 @@ RoomInfo::handle(){
     if(ResultSet_next(r0)){
         out["rooms_num"]=ResultSet_getInt(r0,1);
     }
-    std::string stm1="select * from rooms";
+    std::string stm1="select * from rooms order by id";
     ResultSet_T r1=Connection_executeQuery(sqlConn,stm1.c_str());
     Json rlist;
     while(ResultSet_next(r1)){
