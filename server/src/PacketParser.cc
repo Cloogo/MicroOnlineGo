@@ -103,10 +103,10 @@ PacketParser::dispatch(){
         break;
         case T::SITDOWN:
         {
+            ORDER order=PairManager::getInstance().add(conn,in["id"].as_number());
+            in["order"]=int(order);
             if(in["id"].as_number()==0){
                 in["id"]=conn->localAddress().toPort();
-                ORDER order=PairManager::getInstance().add(conn,in["id"].as_number());
-                in["order"]=int(order);
                 NewRoom newRoom(in);
                 out=newRoom.handle();
             }else{
