@@ -1,12 +1,8 @@
 #include "Account.h"
 #include "Proto.h"
 #include "SqlStm.h"
-#include <zdb/zdb.h>
-#include <zdb/Exception.h>
-#include <zdb/Connection.h>
 
-#define NOT_EXISTED 1
-#define EXISTED 0
+#define T RESPONSE_TYPE
 
 using namespace redbud::parser::json;
 
@@ -18,9 +14,11 @@ Json
 Account::check(){
     std::string stm="select * from users where account=\""+account+"\"";
     if(SqlStm::isExisted(stm)){
-        out["response_type"]=EXISTED;
+        out["response_type"]=T::ACCOUNT_CHECK_FAILED;
+        out["reason"]="account already exists";
     }else{
-        out["response_type"]=NOT_EXISTED;
+        out["response_type"]=T::ACCOUNT_CHECK_SUCCESS;
+        out["reason"]="account not exists";
     }
     return out;
 }

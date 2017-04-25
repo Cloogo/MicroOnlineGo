@@ -1,12 +1,8 @@
 #include "Nickname.h"
 #include "Proto.h"
 #include "SqlStm.h"
-#include <zdb/zdb.h>
-#include <zdb/Exception.h>
-#include <zdb/Connection.h>
 
-#define NOT_EXISTED 1
-#define EXISTED 0
+#define T RESPONSE_TYPE
 
 using namespace redbud::parser::json;
 
@@ -18,9 +14,11 @@ Json
 Nickname::check(){
     std::string stm="select * from users where nickname=\""+nickname+"\"";
     if(SqlStm::isExisted(stm)){
-        out["response type"]=EXISTED;
+        out["response type"]=int(T::NICKNAME_CHECK_FAILED);
+        out["reason"]="nickname has been used";
     }else{
-        out["response type"]=NOT_EXISTED;
+        out["response type"]=int(T::NICKNAME_CHECK_SUCCESS);
+        out["reason"]="nickname can be used";
     }
     return out;
 }
