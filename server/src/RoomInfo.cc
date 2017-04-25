@@ -28,8 +28,10 @@ RoomInfo::handle(){
         rlist.push_back(Json::Object{
                         {"id",ResultSet_getStringByName(r1,"id")},
                         {"name",ResultSet_getStringByName(r1,"name")},
-                        {"player1",ResultSet_getIntByName(r1,"player1")},
-                        {"player2",ResultSet_getIntByName(r1,"player2")},
+                        {"player1",ResultSet_getStringByName(r1,"player1")},
+                        {"player2",ResultSet_getStringByName(r1,"player2")},
+                        {"readygo1",ResultSet_getStringByName(r1,"readygo1")},
+                        {"readygo2",ResultSet_getStringByName(r1,"readygo2")},
                         {"status",ResultSet_getStringByName(r1,"status")}
                         }
                         );
