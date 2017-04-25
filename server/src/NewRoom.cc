@@ -16,7 +16,7 @@ NewRoom::NewRoom(Json in){
 
 Json
 NewRoom::handle(){
-    string stm0="insert into rooms value("+to_string(id)+",\""+name+"\",\""+nickname+"\",\"\",no,no\"waiting\")";
+    string stm0="insert into rooms value("+to_string(id)+",\""+name+"\",\""+nickname+"\",\"\",\"no\",\"no\",\"waiting\")";
     if(SqlStm::silence(stm0)){
         Json toall;
         toall["id"]=id;
