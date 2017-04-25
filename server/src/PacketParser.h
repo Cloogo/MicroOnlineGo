@@ -14,8 +14,8 @@ public:
     explicit PacketParser(const muduo::net::TcpConnectionPtr& conn_,
                           const std::string msg_,
                           const msgCb& msgCb_):conn(conn_),msg(msg_),sendBack(msgCb_){
-            RoomManager::getInstance().setCb(sendBack);
-            PairManager::getInstance().setCb(sendBack);
+            RoomManager::getInstance().setCb(msgCb_);
+            PairManager::getInstance().setCb(msgCb_);
     }
 
     ~PacketParser(){}
