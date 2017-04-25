@@ -1,5 +1,6 @@
 #ifndef _HANDSHAKE_H
 #define _HANDSHAKE_H
+#include "Proto.h"
 #include <redbud/parser/json_parser.h>
 
 class Handshake{
@@ -11,5 +12,6 @@ private:
     redbud::parser::json::Json out;
     int id;
     std::string nickname;
+    ORDER order;
 };
 #endif

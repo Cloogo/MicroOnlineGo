@@ -11,14 +11,15 @@ using namespace std;
 Handshake::Handshake(Json in){
     id=in["id"].as_number();
     nickname=in["nickname"].as_string();
+    order=ORDER(in["order"].as_number());
 }
 
 Json
 Handshake::handle(){
     string stm0;
-    if(id==int(ORDER::LEFT)){
+    if(order==ORDER::LEFT){
         stm0="update rooms set readygo1=\"yes\" where id="+to_string(id);
-    }else if(id==int(ORDER::RIGHT)){
+    }else if(order==ORDER::RIGHT){
         stm0="update rooms set readygo2=\"yes\" where id="+to_string(id);
     }
     if(SqlStm::silence(stm0)){
