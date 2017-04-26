@@ -1,4 +1,5 @@
 enum REQUEST_TYPE{
+     ACCOUNT_CHECK,
      FETCH_PLAYER_INFO,
      REGIST,
      LOGIN,
@@ -10,8 +11,7 @@ enum REQUEST_TYPE{
      READGO,
      GIVEUP,
      PLACECHESS,
-     GAMEOVER_WINNER,
-     GAMEOVER_LOSER,
+     UPDATE_GAMERESULT,
      SEND_MSG
 };
 
@@ -48,10 +48,11 @@ enum RESPONSE_TYPE{
 #event after login.
 "fetch player information request":
 {
-    "id": FETCH_PLAYER_INFO
+    "id": FETCH_PLAYER_INFO,
+    "username":?
 }
 
-"fetch player information request":
+"fetch player information response":
 {
     {
         "id": FETCH_PLAYER_INFO_SUCCESS,

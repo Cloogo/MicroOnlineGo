@@ -1,11 +1,11 @@
 MicroOnlineGo
 ====
 
-#Introduction
+# Introduction
 
 This is a miniature **instant online game** for **Go**.
 
-#schedule
+# schedule
 
 | Finished | Module |
 |:---:|:---:|
