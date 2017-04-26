@@ -140,13 +140,11 @@ PacketParser::dispatch(){
         break;
         case T::PLACECHESS:
         {
+            in.erase("request_type");
+            Json torival=in;
+            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
             ChessInfo chessInfo(in);
             out=chessInfo.handle();
-            Json torival;
-            torival["id"]=in["id"];
-            torival["x"]=in["x"];
-            torival["y"]=in["y"];
-            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
         }
         break;
         case T::UPDATE_GAMERESULT:

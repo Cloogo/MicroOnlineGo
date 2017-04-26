@@ -8,9 +8,7 @@ public:
     ~ChessInfo(){}
     redbud::parser::json::Json handle();
 private:
+    redbud::parser::json::Json in;
     redbud::parser::json::Json out;
-    int id;
-    int x;
-    int y;
 };
 #endif
