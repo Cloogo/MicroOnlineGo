@@ -10,7 +10,7 @@ using namespace std;
 
 Login::Login(Json in){
     account=in["account"].as_string();
-    passwd=in["passwd"].as_string();
+    passwd=in["password"].as_string();
 }
 
 Json
