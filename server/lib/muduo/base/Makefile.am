@@ -1,0 +1,45 @@
+AUTOMAKE_OPTIONS=foreign
+noinst_LIBRARIES=libmuduo_base.a
+INCLUDE=$(top_srcdir)/include/muduo/base
+AM_CPPFLAGS=-I$(top_srcdir)/include/
+libmuduo_base_a_SOURCES=AsyncLogging.cc\
+					   Condition.cc\
+					   CountDownLatch.cc\
+					   Date.cc\
+					   Exception.cc\
+					   FileUtil.cc\
+					   LogFile.cc\
+					   Logging.cc\
+					   LogStream.cc\
+					   ProcessInfo.cc\
+					   Timestamp.cc\
+					   TimeZone.cc\
+					   Thread.cc\
+					   ThreadPool.cc\
+					   $(INCLUDE)/AsyncLogging.h\
+					 $(INCLUDE)/Atomic.h\
+					 $(INCLUDE)/BlockingQueue.h\
+					 $(INCLUDE)/BoundedBlockingQueue.h\
+					 $(INCLUDE)/Condition.h\
+					 $(INCLUDE)/copyable.h\
+					 $(INCLUDE)/CountDownLatch.h\
+					 $(INCLUDE)/CurrentThread.h\
+					 $(INCLUDE)/Date.h\
+					 $(INCLUDE)/Exception.h\
+					 $(INCLUDE)/FileUtil.h\
+					 $(INCLUDE)/GzipFile.h\
+					 $(INCLUDE)/LogFile.h\
+					 $(INCLUDE)/Logging.h\
+					 $(INCLUDE)/LogStream.h\
+					 $(INCLUDE)/Mutex.h\
+					 $(INCLUDE)/ProcessInfo.h\
+					 $(INCLUDE)/Singleton.h\
+					 $(INCLUDE)/StringPiece.h\
+					 $(INCLUDE)/Thread.h\
+					 $(INCLUDE)/ThreadLocal.h\
+					 $(INCLUDE)/ThreadLocalSingleton.h\
+					 $(INCLUDE)/ThreadPool.h\
+					 $(INCLUDE)/Timestamp.h\
+					 $(INCLUDE)/TimeZone.h\
+					 $(INCLUDE)/Types.h\
+					 $(INCLUDE)/WeakCallback.h
