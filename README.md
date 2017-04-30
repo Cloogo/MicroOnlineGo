@@ -1,17 +1,21 @@
-MicroOnlineGo
-====
+Introduction:
 
-# Introduction
+server for Play Go Online.
 
-This is a miniature **instant online game** for **Go**.
+How to install:
 
-# schedule
+1.install libzdb
 
-| Finished | Module |
-|:---:|:---:|
-| | Log in |
-| | Games lobby |
-| | Game interface |
-| | Chat room |
-| | Internet connection |
+cd server/lib/zdb
+./configure
+make
+make install
+
+2.build and run go server
+cd server/
+./configure
+make
+cd src
+service mysql start
+LD_LIBRARY_PATH=/usr/local/lib/ ./MicroOnlineGo
 
