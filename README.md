@@ -4,6 +4,9 @@ server for Play Go Online.
 
 How to install:
 
+tar -xvf MicroOnlineGo-1.0.tar.gz
+cd MicroOnlineGo-1.0
+
 1.install libzdb
 
 cd server/lib/zdb
