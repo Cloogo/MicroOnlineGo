@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS=foreign
 bin_PROGRAMS=MicroOnlineGo
-AM_CPPFLAGS=-g -I$(top_srcdir)/include -I$(top_srcdir)/include/zdb -std=c++11
-AM_LDFLAGS=-pthread -lrt `mysql_config --libs`
+AM_CPPFLAGS=-I$(top_srcdir)/include/ -g -std=c++11 `pkg-config --cflags zdb`
+AM_LDFLAGS=-pthread -lrt `mysql_config --libs` `pkg-config --libs zdb`
 MicroOnlineGo_SOURCES=SqlManager.cc SqlManager.h\
 					  SqlStm.h\
 					  Proto.h\
@@ -26,10 +26,9 @@ MicroOnlineGo_SOURCES=SqlManager.cc SqlManager.h\
 					  GameResult.cc GameResult.h\
 					  GoServer.cc GoServer.h\
 					  main.cc
-MicroOnlineGo_LDADD=../lib/muduo/libmuduo_net.a\
-		   ../lib/muduo/libmuduo_base.a\
-		   ../lib/redbud/parser/libjson.a\
-		   ../lib/zdb/libzdb.a
+MicroOnlineGo_LDADD=../lib/muduo/net/libmuduo_net.a\
+		   ../lib/muduo/base/libmuduo_base.a\
+		   ../lib/redbud/parser/libjson.a
 
 #bin_PROGRAMS=json_test
 #json_test_SOURCES=json_test.cc

@@ -1,3 +1,6 @@
+#ifndef HAVE_CONFIG_H
+#include <config.h>
+#endif
 #include "GoServer.h"
 #include "SqlManager.h"
 #include <muduo/base/Logging.h>

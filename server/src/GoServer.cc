@@ -38,22 +38,24 @@ GoServer::receive(const TcpConnectionPtr& conn,
                  Timestamp time){
     while (buf->readableBytes() >= kHeaderLen){
       const void* data = buf->peek();
-      int32_t be32 = *static_cast<const int32_t*>(data); // SIGBUS
-      const int32_t len = muduo::net::sockets::networkToHost32(be32);
+      const int32_t be32 = *static_cast<const int32_t*>(data); // SIGBUS
+      int32_t len = muduo::net::sockets::networkToHost32(be32);
+      LOG_INFO<<"LENGTH:"<<len;
       if (len > 65536 || len < 0){
         LOG_ERROR << "Invalid length " << len;
         conn->shutdown();
         break;
-      }else if (buf->readableBytes() >= len + kHeaderLen){
+      }else if (buf->readableBytes() >= len+kHeaderLen){
         buf->retrieve(kHeaderLen);
         std::string msg(buf->peek(), len);
+        buf->retrieve(len);
         LOG_INFO<<"REQUEST -"<<conn->peerAddress().toIpPort()<<"->"
         <<conn->localAddress().toIpPort()<<" len: "<<len
         <<" content: "<<msg;
-        PacketParser packet_(conn,msg,boost::bind(&GoServer::send,this,_1,_2));
-        packet_.dispatch();
-        buf->retrieve(len);
+        PacketParser packet(conn,msg,boost::bind(&GoServer::send,this,_1,_2));
+        packet.dispatch();
       }else{
+        LOG_INFO<<"READABLEBYTE:"<<buf->readableBytes();
         break;
       }
     }
