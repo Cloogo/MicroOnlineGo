@@ -5,8 +5,10 @@
 #define T RESPONSE_TYPE
 
 using namespace redbud::parser::json;
+using namespace muduo::net;
 
-SinglecastMsg::SinglecastMsg(Json in){
+SinglecastMsg::SinglecastMsg(const Json& in){
+    roomid=in["roomid"].as_number();
     nickname=in["nickname"].as_string();
     msg=in["msg"].as_string();
 }
@@ -15,6 +17,14 @@ Json
 SinglecastMsg::handle(){
     out["nickname"]=nickname;
     out["msg"]=msg;
-    out["response_type"]=int(T::SEND_MSG_SUCCESS);
+    torival=out;
+    torival["response_type"]=static_cast<int>(RESPONSE_TYPE::SINGLECAST_CHAT);
+    PairManager::getInstance().singlecast(conn,roomid,torival.dumps());
+    out["response_type"]=static_cast<int>(T::SEND_MSG_SUCCESS);
     return out;
+}
+
+void 
+SinglecastMsg::setConn(const TcpConnectionPtr& conn_){
+    conn=conn_;
 }

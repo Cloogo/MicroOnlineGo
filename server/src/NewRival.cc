@@ -11,7 +11,7 @@ using namespace std;
 NewRival::NewRival(Json in){
     id=in["id"].as_number();
     nickname=in["nickname"].as_string();
-    order=ORDER(int(in["order"].as_number()));
+    order=ORDER(static_cast<int>(in["order"].as_number()));
 }
 
 Json
@@ -21,14 +21,14 @@ NewRival::enter(){
         Json toall;
         toall["id"]=id;
         toall["nickname"]=nickname;
-        toall["order"]=int(order);
+        toall["order"]=static_cast<int>(order);
         toall["status"]="waiting";
-        toall["response_type"]=int(T::BROADCAST_SITDOWN);
+        toall["response_type"]=static_cast<int>(T::BROADCAST_SITDOWN);
         RoomManager::getInstance().broadcast(0,toall.dumps());
-        out["response_type"]=int(T::SITDOWN_SUCCESS);
+        out["response_type"]=static_cast<int>(T::SITDOWN_SUCCESS);
         return out;
     }
-    out["response_type"]=int(T::SITDOWN_FAILED);
+    out["response_type"]=static_cast<int>(T::SITDOWN_FAILED);
     out["reason"]="inner server error";
     return out;
 }
@@ -46,12 +46,12 @@ NewRival::leave(){
         toall["id"]=id;
         toall["nickname"]=nickname;
         toall["status"]="waiting";
-        toall["response_type"]=int(T::BROADCAST_LEAVE);
+        toall["response_type"]=static_cast<int>(T::BROADCAST_LEAVE);
         RoomManager::getInstance().broadcast(0,toall.dumps());
-        out["response_type"]=int(T::LEAVE_SUCCESS);
+        out["response_type"]=static_cast<int>(T::LEAVE_SUCCESS);
         return out;
     }
-    out["response_type"]=int(T::LEAVE_FAILED);
+    out["response_type"]=static_cast<int>(T::LEAVE_FAILED);
     out["reason"]="inner server error";
     return out;
 }

@@ -23,13 +23,13 @@ NewRoom::handle(){
         toall["nickname"]=nickname;
         toall["name"]=name;
         toall["status"]="waiting";
-        toall["response_type"]=int(T::BROADCAST_SITDOWN);
+        toall["response_type"]=static_cast<int>(T::BROADCAST_SITDOWN);
         RoomManager::getInstance().broadcast(0,toall.dumps());
-        out["response_type"]=int(T::SITDOWN_SUCCESS);
+        out["response_type"]=static_cast<int>(T::SITDOWN_SUCCESS);
         return out;
     }else{
     }
-    out["response_type"]=int(T::SITDOWN_FAILED);
+    out["response_type"]=static_cast<int>(T::SITDOWN_FAILED);
     out["reason"]="Inner server error";
     return out;
 }

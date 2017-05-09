@@ -4,8 +4,8 @@
 
 class GroupChat{
 public:
-    GroupChat(redbud::parser::json::Json in);
-    ~GroupChat(){}
+    GroupChat(const redbud::parser::json::Json& in);
+    ~GroupChat()=default;
     redbud::parser::json::Json handle();
 private:
     std::string nickname;

@@ -4,8 +4,8 @@
 
 class Login{
 public:
-    Login(redbud::parser::json::Json in);
-    ~Login(){}
+    Login(const redbud::parser::json::Json& in);
+    ~Login()=default;
     redbud::parser::json::Json handle();
 private:
     redbud::parser::json::Json out;

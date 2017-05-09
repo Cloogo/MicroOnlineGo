@@ -8,10 +8,10 @@ using namespace muduo;
 using namespace muduo::net;
 
 GoServer::GoServer(EventLoop* loop,const InetAddress& listenAddr)
-    :server_(loop,listenAddr,"GoServer"){
-    server_.setConnectionCallback(
+    :server(loop,listenAddr,"GoServer"){
+    server.setConnectionCallback(
         boost::bind(&GoServer::onConnection,this,_1));
-    server_.setMessageCallback(
+    server.setMessageCallback(
         boost::bind(&GoServer::receive,this,_1,_2,_3));
 }
 
@@ -19,7 +19,7 @@ GoServer::~GoServer(){}
 
 void
 GoServer::start(){
-    server_.start();
+    server.start();
 }
 
 void
@@ -56,6 +56,8 @@ GoServer::receive(const TcpConnectionPtr& conn,
         packet.dispatch();
       }else{
         LOG_INFO<<"READABLEBYTE:"<<buf->readableBytes();
+        std::string msg(buf->peek(),buf->readableBytes());
+        LOG_INFO<<"READABLE CONTENT:"<<msg;
         break;
       }
     }

@@ -11,13 +11,13 @@
 
 using namespace redbud::parser::json;
 
-LobbyInfo::LobbyInfo(Json in){
+LobbyInfo::LobbyInfo(const Json& in){
 }
 
 redbud::parser::json::Json
 LobbyInfo::handle(){
     //TODO 
-    out["response_type"]=int(T::FETCH_LOBBY_INFO_FAILED);
+    out["response_type"]=static_cast<int>(T::FETCH_LOBBY_INFO_FAILED);
     out["reason"]="inner server error";
     return out;
 }

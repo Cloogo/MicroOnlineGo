@@ -4,8 +4,8 @@
 
 class RoomInfo{
 public:
-    RoomInfo(redbud::parser::json::Json in);
-    ~RoomInfo(){}
+    RoomInfo(const redbud::parser::json::Json& in);
+    ~RoomInfo()=default;
     redbud::parser::json::Json handle();
 private:
     redbud::parser::json::Json out;

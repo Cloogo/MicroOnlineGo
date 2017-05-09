@@ -5,8 +5,8 @@
 
 class Account{
 public:
-    Account(redbud::parser::json::Json in);
-    ~Account(){}
+    Account(const redbud::parser::json::Json& in);
+    ~Account()=default;
     redbud::parser::json::Json handle();
     redbud::parser::json::Json check();
 private:

@@ -6,7 +6,7 @@
 
 using namespace redbud::parser::json;
 
-GroupChat::GroupChat(Json in){
+GroupChat::GroupChat(const Json& in){
     nickname=in["nickname"].as_string();
     msg=in["msg"].as_string();
 }
@@ -14,10 +14,10 @@ GroupChat::GroupChat(Json in){
 Json
 GroupChat::handle(){
     Json msgtoall;
-    msgtoall["response_type"]=int(T::GROUP_CHAT_MSG);
+    msgtoall["response_type"]=static_cast<int>(T::GROUP_CHAT_MSG);
     msgtoall["nickname"]=nickname;
     msgtoall["msg"]=msg;
     RoomManager::getInstance().broadcast(0,msgtoall.dumps());
-    out["response_type"]=int(T::GROUP_CHAT_SUCCESS);
+    out["response_type"]=static_cast<int>(T::GROUP_CHAT_SUCCESS);
     return out;
 }

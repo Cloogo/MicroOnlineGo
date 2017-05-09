@@ -12,9 +12,9 @@
 #include "PlayerInfo.h"
 #include "PlayersInfo.h"
 #include "GroupChat.h"
-#include "NewRoom.h"
-#include "NewRival.h"
-#include  "Handshake.h"
+#include "Table.h"
+#include "Room.h"
+#include "Handshake.h"
 #include "ChessInfo.h"
 #include "SinglecastMsg.h"
 #include "GameResult.h"
@@ -38,7 +38,7 @@ PacketParser::decode(){
 void
 PacketParser::dispatch(){
     decode();
-    switch(T(int(in["request_type"].as_number()))){
+    switch(T(static_cast<int>(in["request_type"].as_number()))){
         case T::ACCOUNT_CHECK:
         {
             Account account(in);
@@ -71,6 +71,26 @@ PacketParser::dispatch(){
             RoomManager::getInstance().remove(conn,0);
         }
         break;
+        case T::SEND_MSG:
+        {
+            SinglecastMsg singlecastMsg(in);
+            singlecastMsg.setConn(conn);
+            out=singlecastMsg.handle();
+        }
+        break;
+        case T::GROUP_CHAT:
+        {
+            GroupChat groupChat(in);
+            out=groupChat.handle();
+        }
+        break;
+        case T::PLACECHESS:
+        {
+            ChessInfo chessInfo(in);
+            chessInfo.setConn(conn);
+            out=chessInfo.handle();
+        }
+        break;
         case T::FETCH_PLAYER_INFO:
         {
             PlayerInfo playerInfo(in);
@@ -95,17 +115,40 @@ PacketParser::dispatch(){
             out=roomInfo.handle();
         }
         break;
-        case T::GROUP_CHAT:
+        case T::LEAVE://UPDATE_PLAYER in client
         {
-            GroupChat groupChat(in);
-            out=groupChat.handle();
+           Table table(in);
+           table.setConn(conn);
+           out=table.handle();
         }
         break;
+        case T::SITDOWN://UPDATE_ROOM in client
+        {
+            Room room(in);
+            room.setConn(conn);
+            out=room.handle();
+        }
+        break;
+        case T::READYGO:
+        {
+            Handshake handShake(in);
+            handShake.setConn(conn);
+            out=handShake.handle();
+        }
+        break;
+        case T::UPDATE_GAMERESULT:
+        {
+            GameResult gameResult(in);
+            gameResult.setConn(conn);
+            out=gameResult.handle();
+        }
+        break;
+#if 0
         case T::SITDOWN:
         {
             ORDER order=PairManager::getInstance().add(conn,in["id"].as_number());
-            in["order"]=int(order);
-            if(int(in["id"].as_number())==0){
+            in["order"]=static_cast<int>(order);
+            if(static_cast<int>(in["id"].as_number())==0){
                 in["id"]=conn->localAddress().toPort();
                 NewRoom newRoom(in);
                 out=newRoom.handle();
@@ -118,58 +161,14 @@ PacketParser::dispatch(){
         break;
         case T::LEAVE:
         {
-            ORDER order=PairManager::getInstance().pos(conn,in["id"].as_number());
-            in["order"]=int(order);
+            ORDER order=PairManager::getInstance().pos(conn,in["room"].as_number());
+            in["order"]=static_cast<int>(order);
             NewRival newRival(in);
             out=newRival.leave();
-            PairManager::getInstance().remove(conn,in["id"].as_number());
+            PairManager::getInstance().remove(conn,in["room"].as_number());
         }
         break;
-        case T::READYGO:
-        {
-            ORDER order=PairManager::getInstance().pos(conn,in["id"].as_number());
-            in["order"]=int(order);
-            Handshake handShake(in);
-            out=handShake.handle();
-            Json torival;
-            torival["response_type"]=int(RESPONSE_TYPE::SINGLECAST_READYGO);
-            torival["id"]=in["id"];
-            torival["nickname"]=in["nickname"];
-            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
-        }
-        break;
-        case T::PLACECHESS:
-        {
-            in.erase("request_type");
-            Json torival=in;
-            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
-            ChessInfo chessInfo(in);
-            out=chessInfo.handle();
-        }
-        break;
-        case T::UPDATE_GAMERESULT:
-        {
-            //originally the protos are GAMEOVER_WINNER/GAMEOVER_LOSER/GIVEUP
-            GameResult gameResult(in);
-            out=gameResult.handle();
-            Json toall;
-            in.erase("request_type");
-            toall=in;
-            in["response_type"]=int(RESPONSE_TYPE::BROADCAST_GAMERESULT_UPDATE);
-            RoomManager::getInstance().broadcast(0,toall.dumps());
-        }
-        break;
-        case T::SEND_MSG:
-        {
-            SinglecastMsg singlecastMsg(in);
-            out=singlecastMsg.handle();
-            Json torival;
-            torival["nickname"]=out["nickname"];
-            torival["msg"]=out["msg"];
-            torival["response_type"]=int(RESPONSE_TYPE::SINGLECAST_CHAT);
-            PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
-        }
-        break;
+#endif
     }
     encode();
 }

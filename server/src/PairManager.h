@@ -12,8 +12,8 @@
 
 class PairManager:boost::noncopyable{
 public:
-    typedef boost::function<void (const muduo::net::TcpConnectionPtr&,
-                                  std::string&)>msgCb;
+    using msgCb=boost::function<void (const muduo::net::TcpConnectionPtr&,
+                                  std::string&)>;
     static PairManager& getInstance(){
         pthread_once(&ponce,&PairManager::init);
         return *instance;
@@ -31,9 +31,9 @@ public:
     static pthread_once_t ponce;
     static PairManager* instance;
 private:
-    typedef std::pair<muduo::net::TcpConnectionPtr,muduo::net::TcpConnectionPtr>ConnPair;
-    typedef std::map<int,ConnPair>ConnPairsList;
-    typedef ConnPairsList::iterator Iter;
+    using ConnPair=std::pair<muduo::net::TcpConnectionPtr,muduo::net::TcpConnectionPtr>;
+    using ConnPairsList=std::map<int,ConnPair>;
+    using Iter=ConnPairsList::iterator;
     ConnPairsList pairsList;
     msgCb sendBack;
 };

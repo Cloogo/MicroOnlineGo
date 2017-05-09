@@ -9,16 +9,16 @@
 
 class PacketParser:boost::noncopyable{
 public:
-    typedef boost::function<void (const muduo::net::TcpConnectionPtr&,
-                                  std::string&)> msgCb;
-    explicit PacketParser(const muduo::net::TcpConnectionPtr& conn_,
+    using msgCb=boost::function<void (const muduo::net::TcpConnectionPtr&,
+                                  std::string&)>;
+    PacketParser(const muduo::net::TcpConnectionPtr& conn_,
                           const std::string msg_,
                           const msgCb& msgCb_):conn(conn_),msg(msg_),sendBack(msgCb_){
             RoomManager::getInstance().setCb(msgCb_);
             PairManager::getInstance().setCb(msgCb_);
     }
 
-    ~PacketParser(){}
+    ~PacketParser()=default;
 
     void dispatch();
 

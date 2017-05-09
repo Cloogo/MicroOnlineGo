@@ -10,8 +10,8 @@
 
 class RoomManager:boost::noncopyable{
 public:
-    typedef boost::function<void (const muduo::net::TcpConnectionPtr&,
-                                  std::string&) > msgCb;
+    using msgCb=boost::function<void (const muduo::net::TcpConnectionPtr&,
+                                  std::string&) >;
 
     static RoomManager& getInstance(){
         pthread_once(&ponce,&RoomManager::init);
@@ -28,8 +28,8 @@ public:
     static RoomManager* instance;
 private:
     bool find(const int roomId);
-    typedef std::set<muduo::net::TcpConnectionPtr>ConnsList;
-    typedef std::map<int,std::set<muduo::net::TcpConnectionPtr>>::iterator Iter;
+    using ConnsList=std::set<muduo::net::TcpConnectionPtr>;
+    using Iter=std::map<int,std::set<muduo::net::TcpConnectionPtr>>::iterator;
     std::map<int,std::set<muduo::net::TcpConnectionPtr>>rooms;
     msgCb sendBack;
 };

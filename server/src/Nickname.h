@@ -5,8 +5,8 @@
 
 class Nickname{
 public:
-    Nickname(redbud::parser::json::Json in);
-    ~Nickname(){}
+    Nickname(const redbud::parser::json::Json& in);
+    ~Nickname()=default;
     redbud::parser::json::Json handle();
     redbud::parser::json::Json check();
 private:

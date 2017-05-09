@@ -10,7 +10,7 @@
 #define T RESPONSE_TYPE
 using namespace redbud::parser::json;
 
-RoomInfo::RoomInfo(Json in){
+RoomInfo::RoomInfo(const Json& in){
 }
 
 Json
@@ -30,16 +30,22 @@ RoomInfo::handle(){
                         {"name",ResultSet_getStringByName(r1,"name")},
                         {"player1",ResultSet_getStringByName(r1,"player1")},
                         {"player2",ResultSet_getStringByName(r1,"player2")},
-                        {"readygo1",ResultSet_getStringByName(r1,"readygo1")},
-                        {"readygo2",ResultSet_getStringByName(r1,"readygo2")},
-                        {"status",ResultSet_getStringByName(r1,"status")}
+                        {"state",ResultSet_getIntByName(r1,"state")},
+                        {"Config",
+                        Json::Object{
+                            {"komi",ResultSet_getIntByName(r1,"komi")},
+                            {"mainTime",ResultSet_getIntByName(r1,"mainTime")},
+                            {"period",ResultSet_getIntByName(r1,"period")},
+                            {"periodTimes",ResultSet_getIntByName(r1,"periodTimes")}
+                        }
+                        }
                         }
                         );
     }
     if(rlist.size()!=0){
         out["rooms_list"]=rlist;
     }
-    out["response_type"]=int(T::FETCH_ROOM_INFO_SUCCESS);
+    out["response_type"]=static_cast<int>(T::FETCH_ROOM_INFO_SUCCESS);
     SqlManager::getInstance().putConn(sqlConn);
     return out;
 }

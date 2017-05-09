@@ -27,7 +27,7 @@ public:
 
 private:
 
-    muduo::net::TcpServer server_;
+    muduo::net::TcpServer server;
     const static size_t kHeaderLen = sizeof(int32_t);
 };
 
