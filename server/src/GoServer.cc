@@ -67,6 +67,9 @@ void
 GoServer::send(const TcpConnectionPtr& conn,
             std::string& message){
     Buffer buf;
+    if(message.size()==0){
+        return;
+    }
     buf.append(message.data(), message.size());
     int32_t len = static_cast<int32_t>(message.size());
     int32_t be32 = muduo::net::sockets::hostToNetwork32(len);

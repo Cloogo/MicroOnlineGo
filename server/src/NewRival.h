@@ -1,6 +1,5 @@
 #ifndef _NEWRIVAL_H
 #define _NEWRIVAL_H
-#include "Proto.h"
 #include <redbud/parser/json_parser.h>
 
 class NewRival{
@@ -11,8 +10,8 @@ public:
     redbud::parser::json::Json leave();
 private:
     redbud::parser::json::Json out;
-    std::string nickname;
+    std::string account;
     int id;
-    ORDER order;
+    Order order;
 };
 #endif

@@ -25,7 +25,7 @@ Login::handle(){
                 if(!user.empty()){
                     Json toall;
                     toall["user"]=user;
-                    toall["response_type"]=static_cast<int>(T::BROADCAST_SOMEONE_UP);
+                    toall["response_type"]=static_cast<int>(T::BROADCAST_UPDATE_PLAYER);
                     auto msg=toall.dumps();
                     RoomManager::getInstance().broadcast(0,msg);
                     out["response_type"]=static_cast<int>(T::LOGIN_SUCCESS);

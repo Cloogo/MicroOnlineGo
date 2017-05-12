@@ -63,10 +63,10 @@ public:
              room["player1"]=ResultSet_getStringByName(r,"player1");
              room["player2"]=ResultSet_getStringByName(r,"player2");
              room["state"]=ResultSet_getIntByName(r,"state");
-             room["Config"]["komi"]=ResultSet_getIntByName(r,"komi");
-             room["Config"]["mainTime"]=ResultSet_getIntByName(r,"mainTime");
-             room["Config"]["period"]=ResultSet_getIntByName(r,"period");
-             room["Config"]["periodTimes"]=ResultSet_getIntByName(r,"periodTimes");
+             room["config"]["komi"]=ResultSet_getIntByName(r,"komi");
+             room["config"]["mainTime"]=ResultSet_getIntByName(r,"mainTime");
+             room["config"]["period"]=ResultSet_getIntByName(r,"period");
+             room["config"]["periodTimes"]=ResultSet_getIntByName(r,"periodTimes");
             }
         }
         CATCH(SQLException)

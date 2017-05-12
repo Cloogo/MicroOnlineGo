@@ -2,7 +2,7 @@
 
 pthread_once_t SqlManager::ponce=PTHREAD_ONCE_INIT;
 SqlManager* SqlManager::instance=NULL;
-std::string SqlManager::url="mysql://localhost/go?user=Cloogo&password=1234";
+std::string SqlManager::url="mysql://localhost/go?user=Cloogo&password=1234&charset=utf8";
 int SqlManager::maxConnsNum=1024;
 
 bool

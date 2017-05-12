@@ -31,7 +31,7 @@ RoomInfo::handle(){
                         {"player1",ResultSet_getStringByName(r1,"player1")},
                         {"player2",ResultSet_getStringByName(r1,"player2")},
                         {"state",ResultSet_getIntByName(r1,"state")},
-                        {"Config",
+                        {"config",
                         Json::Object{
                             {"komi",ResultSet_getIntByName(r1,"komi")},
                             {"mainTime",ResultSet_getIntByName(r1,"mainTime")},
@@ -44,6 +44,8 @@ RoomInfo::handle(){
     }
     if(rlist.size()!=0){
         out["rooms_list"]=rlist;
+    }else{
+        out["rooms_list"]=Json::Array{};
     }
     out["response_type"]=static_cast<int>(T::FETCH_ROOM_INFO_SUCCESS);
     SqlManager::getInstance().putConn(sqlConn);

@@ -3,9 +3,6 @@
 #include "SqlManager.h"
 #include "SqlStm.h"
 #include "RoomManager.h"
-#include <zdb/zdb.h>
-#include <zdb/Exception.h>
-#include <zdb/Connection.h>
 
 #define T RESPONSE_TYPE
 
@@ -22,10 +19,11 @@ Logout::handle(){
     if(SqlStm::silence(stm0)){
         Json user;
         user["account"]=account;
-        user["response_type"]=static_cast<int>(T::BROADCAST_SOMEONE_DOWN);
+//        user["response_type"]=static_cast<int>(T::BROADCAST_SOMEONE_DOWN);
+        user["response_type"]=static_cast<int>(T::LOGOUT_SUCCESS);
         auto msg=user.dumps();
         RoomManager::getInstance().broadcast(0,msg);
-        out["response_type"]=static_cast<int>(T::LOGOUT_SUCCESS);
+//        out["response_type"]=static_cast<int>(T::LOGOUT_SUCCESS);
         return out;
     }
     out["response_type"]=static_cast<int>(T::LOGOUT_FAILED);

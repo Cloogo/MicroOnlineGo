@@ -12,12 +12,13 @@
 #include "PlayerInfo.h"
 #include "PlayersInfo.h"
 #include "GroupChat.h"
-#include "Table.h"
+#include "Player.h"
 #include "Room.h"
 #include "Handshake.h"
 #include "ChessInfo.h"
 #include "SinglecastMsg.h"
 #include "GameResult.h"
+#include "BookSeat.h"
 #include <redbud/parser/json_parser.h>
 #define T REQUEST_TYPE
 
@@ -81,6 +82,7 @@ PacketParser::dispatch(){
         case T::GROUP_CHAT:
         {
             GroupChat groupChat(in);
+            groupChat.setConn(conn);
             out=groupChat.handle();
         }
         break;
@@ -115,14 +117,19 @@ PacketParser::dispatch(){
             out=roomInfo.handle();
         }
         break;
-        case T::LEAVE://UPDATE_PLAYER in client
+        case T::UPDATE_PLAYER:
         {
+#if 0
            Table table(in);
            table.setConn(conn);
            out=table.handle();
+#endif
+           Player player(in);
+           player.setConn(conn);
+           out=player.handle();
         }
         break;
-        case T::SITDOWN://UPDATE_ROOM in client
+        case T::UPDATE_ROOM:
         {
             Room room(in);
             room.setConn(conn);
@@ -141,6 +148,21 @@ PacketParser::dispatch(){
             GameResult gameResult(in);
             gameResult.setConn(conn);
             out=gameResult.handle();
+        }
+        break;
+        case T::SITDOWN:
+        {
+            BookSeat bookSeat(in);
+            bookSeat.setConn(conn);
+            out=bookSeat.handle();
+        }
+        break;
+        case T::JUDGE:
+        {
+            in.erase("request_type");
+            Json torival=in;
+            torival["response_type"]=static_cast<int>(RESPONSE_TYPE::JUDGE);
+            PairManager::getInstance().singlecast(conn,static_cast<int>(in["room_id"].as_number()),torival.dumps());
         }
         break;
 #if 0

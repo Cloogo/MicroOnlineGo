@@ -1,5 +1,5 @@
 #include "RoomManager.h"
-
+#include <muduo/base/Logging.h>
 using namespace std;
 using namespace muduo;
 using namespace muduo::net;
@@ -42,6 +42,8 @@ RoomManager::remove(const TcpConnectionPtr& conn,const int roomId){
     if(find(roomId)){
         ConnsList& room=rooms[roomId];
         room.erase(conn);
+        LOG_INFO<<"REMOVE"<<conn->peerAddress().toIpPort()<<"->"
+            <<conn->localAddress().toIpPort();
     }else{
     }
     pthread_mutex_unlock(&mutex);
@@ -53,6 +55,21 @@ RoomManager::broadcast(const int roomId,std::string msg){
     if(find(roomId)){
         ConnsList room=rooms[roomId];
         for(set<TcpConnectionPtr>::iterator it=room.begin();it!=room.end();it++){
+            sendBack(*it,msg);
+        }
+    }
+    pthread_mutex_unlock(&mutex);
+}
+
+void
+RoomManager::broadcast2(const TcpConnectionPtr& conn,const int roomId,std::string msg){
+    pthread_mutex_lock(&mutex);
+    if(find(roomId)){
+        ConnsList room=rooms[roomId];
+        for(set<TcpConnectionPtr>::iterator it=room.begin();it!=room.end();it++){
+            if(*it==conn){
+                continue;
+            }
             sendBack(*it,msg);
         }
     }

@@ -8,15 +8,15 @@ using namespace redbud::parser::json;
 using namespace muduo::net;
 
 SinglecastMsg::SinglecastMsg(const Json& in){
-    roomid=in["roomid"].as_number();
-    nickname=in["nickname"].as_string();
-    msg=in["msg"].as_string();
+    roomid=in["room_id"].as_number();
+    account=in["account"].as_string();
+    msg=in["message"].as_string();
 }
 
 Json
 SinglecastMsg::handle(){
-    out["nickname"]=nickname;
-    out["msg"]=msg;
+    out["account"]=account;
+    out["message"]=msg;
     torival=out;
     torival["response_type"]=static_cast<int>(RESPONSE_TYPE::SINGLECAST_CHAT);
     PairManager::getInstance().singlecast(conn,roomid,torival.dumps());

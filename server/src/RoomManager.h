@@ -23,6 +23,7 @@ public:
     void add(const muduo::net::TcpConnectionPtr& conn,const int roomId);
     void remove(const muduo::net::TcpConnectionPtr& conn,const int roomId);
     void broadcast(const int roomId,std::string msg);
+    void broadcast2(const muduo::net::TcpConnectionPtr& conn,const int roomId,std::string msg);
     void setCb(const msgCb& sendBack_);
     static pthread_once_t ponce;
     static RoomManager* instance;

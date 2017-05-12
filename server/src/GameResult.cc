@@ -1,6 +1,7 @@
 #include "GameResult.h"
 #include "Proto.h"
 #include "SqlStm.h"
+#include "PairManager.h"
 
 #define T RESPONSE_TYPE
 
@@ -9,8 +10,10 @@ using namespace muduo::net;
 using namespace std;
 
 GameResult::GameResult(const Json& in){
-    account=in["account"].as_string();
-    room_id=in["room_id"].as_number();
+    roomid=in["room_id"].as_number();
+    player1point=in["point1"].as_number();
+    player2point=in["point2"].as_number();
+    result=RESULT_TYPE(static_cast<int>(in["result"].as_number()));
 }
 
 Json
@@ -31,8 +34,25 @@ GameResult::handle(){
     return out;
 #endif
     Json torival;
+    switch(result){
+        case RESULT_TYPE::WIN:
+        {
+            torival["result"]=static_cast<int>(RESULT_TYPE::LOSE);
+        }
+        break;
+        case RESULT_TYPE::LOSE:
+        {
+            torival["result"]=static_cast<int>(RESULT_TYPE::WIN);
+        }
+        break;
+    }
+    torival["score"]=player2point;
     torival["response_type"]=static_cast<int>(T::SINGLECAST_UPDATE_GAMERESULT);
-    out["response_type"]=static_cast<int>(T::UPDATE_GAMERESULT_SUCCESS);
+    PairManager::getInstance().singlecast(conn,roomid,torival.dumps());
+    out["result"]=static_cast<int>(result);
+    out["score"]=player1point;
+//    out["response_type"]=static_cast<int>(T::UPDATE_GAMERESULT_SUCCESS);
+    out["response_type"]=static_cast<int>(T::SINGLECAST_UPDATE_GAMERESULT);
     return out;
 }
 

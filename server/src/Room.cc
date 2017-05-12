@@ -12,15 +12,15 @@ using namespace muduo::net;
 
 Room::Room(const Json& in_){
     in=in_;
-    roomid=in["room"].as_number();
+    roomid=in["id"].as_number();
     name=in["name"].as_string();
     player1=in["player1"].as_string();
     player2=in["player2"].as_string();
     state=in["state"].as_number();
-    komi=in["komi"].as_number();
-    mainTime=in["mainTime"].as_number();
-    period=in["period"].as_number();
-    periodTimes=in["periodTimes"].as_number();
+    komi=in["config"]["komi"].as_number();
+    mainTime=in["config"]["mainTime"].as_number();
+    period=in["config"]["period"].as_number();
+    periodTimes=in["config"]["periodTimes"].as_number();
     action=PLAYER_ACTION(in["action"].as_number());
 }
 
@@ -38,7 +38,7 @@ Room::handle(){
         }else{
             string stm1="insert into rooms values("
                 +to_string(roomid)+","
-                +name+","
+                +"\""+name+"\""+","
                 "\""+player1+"\""+","
                 "\""+player2+"\""+","
                 +to_string(state)+","
@@ -46,7 +46,7 @@ Room::handle(){
                 +to_string(mainTime)+","
                 +to_string(period)+","
                 +to_string(periodTimes)
-                +"0,0)";
+                +",0,0)";
             if(SqlStm::silence(stm1)){
             }else{
                 out["response_type"]=static_cast<int>(T::UPDATE_ROOM_FAILED);
@@ -91,7 +91,9 @@ Room::handle(){
     }
     Json toall;
     toall["response_type"]=static_cast<int>(T::BROADCAST_UPDATE_ROOM);
+    in.erase("action");
     toall["room"]=in;
+    toall["action"]=static_cast<int>(action);
     RoomManager::getInstance().broadcast(0,toall.dumps());
     out["response_type"]=static_cast<int>(T::UPDATE_ROOM_SUCCESS);
     return out;

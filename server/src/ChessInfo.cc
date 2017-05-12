@@ -15,8 +15,10 @@ Json
 ChessInfo::handle(){
     in.erase("request_type");
     torival=in;
-    PairManager::getInstance().singlecast(conn,in["id"].as_number(),torival.dumps());
-    out["response_type"]=static_cast<int>(T::PLACECHESS_SUCCESS);
+    torival["response_type"]=static_cast<int>(T::SINGLECAST_PLACECHESS);
+    PairManager::getInstance().singlecast(conn,in["room_id"].as_number(),torival.dumps());
+//    out["response_type"]=static_cast<int>(T::PLACECHESS_SUCCESS);
+//    out["response_type"]=static_cast<int>(T::SINGLECAST_PLACECHESS);
     return out;
 }
 
