@@ -25,16 +25,24 @@ public:
     static bool silence(std::string stm){
         LOG_INFO<<"SqlStm:silence:stm:"<<stm;
         bool isOk=false;
+retry:
         Connection_T sqlConn=SqlManager::getInstance().getConn();
+        if(sqlConn==NULL){
+            LOG_INFO<<"SqlStm:silence:stm:sqlConn=NULL";
+            goto retry;
+        }
         TRY
         {
             Connection_execute(sqlConn,stm.c_str());
             isOk=true;
+            LOG_INFO<<"reach try";
         }
         CATCH(SQLException)
         {
+            LOG_INFO<<"reach catch";
         }
         END_TRY;
+        LOG_INFO<<"reach end of silence";
         SqlManager::getInstance().putConn(sqlConn);
         return isOk;
     }

@@ -45,7 +45,7 @@ Player::update(){
         "lose="+to_string(lose)+","
         "draw="+to_string(draw)+","
         "state="+to_string(state)+","
-        "id="+to_string(roomid)+
+        "roomid="+to_string(roomid)+
         " where account=\""+account+"\"";
     if(SqlStm::silence(stm)){
         ok=true;
@@ -62,9 +62,9 @@ Player::update(){
 bool
 Player::notify(){
    in.erase("request_type");
-   Json toall=in;
-   toall["response_type"]=static_cast<int>(T::BROADCAST_UPDATE_PLAYER);
+   Json toall;
    toall["user"]=in;
+   toall["response_type"]=static_cast<int>(T::BROADCAST_UPDATE_PLAYER);
    RoomManager::getInstance().broadcast(0,toall.dumps());
    return true;
 }

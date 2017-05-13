@@ -55,9 +55,9 @@ GoServer::receive(const TcpConnectionPtr& conn,
         packet.dispatch();
         buf->retrieve(len);
       }else{
-        LOG_INFO<<"READABLEBYTE:"<<buf->readableBytes();
-        std::string msg(buf->peek(),buf->readableBytes());
-        LOG_INFO<<"READABLE CONTENT:"<<msg;
+//        LOG_INFO<<"READABLEBYTE:"<<buf->readableBytes();
+//        std::string msg(buf->peek(),buf->readableBytes());
+//        LOG_INFO<<"READABLE CONTENT:"<<msg;
         break;
       }
     }
