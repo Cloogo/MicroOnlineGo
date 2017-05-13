@@ -48,12 +48,12 @@ GoServer::receive(const TcpConnectionPtr& conn,
       }else if (buf->readableBytes() >= len+kHeaderLen){
         buf->retrieve(kHeaderLen);
         std::string msg(buf->peek(), len);
-        buf->retrieve(len);
         LOG_INFO<<"REQUEST -"<<conn->peerAddress().toIpPort()<<"->"
         <<conn->localAddress().toIpPort()<<" len: "<<len
         <<" content: "<<msg;
         PacketParser packet(conn,msg,boost::bind(&GoServer::send,this,_1,_2));
         packet.dispatch();
+        buf->retrieve(len);
       }else{
         LOG_INFO<<"READABLEBYTE:"<<buf->readableBytes();
         std::string msg(buf->peek(),buf->readableBytes());
