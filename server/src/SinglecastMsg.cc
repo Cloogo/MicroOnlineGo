@@ -1,11 +1,10 @@
-#include "SinglecastMsg.h"
 #include "Proto.h"
+#include "SinglecastMsg.h"
 #include "PairManager.h"
 
 #define T RESPONSE_TYPE
-
-using namespace redbud::parser::json;
 using namespace muduo::net;
+using namespace redbud::parser::json;
 
 SinglecastMsg::SinglecastMsg(const Json& in){
     roomid=in["room_id"].as_number();
@@ -17,7 +16,7 @@ Json
 SinglecastMsg::handle(){
     out["account"]=account;
     out["message"]=msg;
-    torival=out;
+    Json torival=out;
     torival["response_type"]=static_cast<int>(RESPONSE_TYPE::SINGLECAST_CHAT);
     PairManager::getInstance().singlecast(conn,roomid,torival.dumps());
     out["response_type"]=static_cast<int>(T::SEND_MSG_SUCCESS);

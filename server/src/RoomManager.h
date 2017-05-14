@@ -7,10 +7,11 @@
 #include <boost/function.hpp>
 #include <redbud/parser/json.h>
 #include <muduo/net/TcpConnection.h>
+#include <iostream>
 
 class RoomManager:boost::noncopyable{
 public:
-    using msgCb=boost::function<void (const muduo::net::TcpConnectionPtr&,
+    using TellCli=boost::function<void (const muduo::net::TcpConnectionPtr&,
                                   std::string&) >;
 
     static RoomManager& getInstance(){
@@ -24,7 +25,7 @@ public:
     void remove(const muduo::net::TcpConnectionPtr& conn,const int roomId);
     void broadcast(const int roomId,std::string msg);
     void broadcast2(const muduo::net::TcpConnectionPtr& conn,const int roomId,std::string msg);
-    void setCb(const msgCb& sendBack_);
+    void setCb(const TellCli& tellCli_);
     static pthread_once_t ponce;
     static RoomManager* instance;
 private:
@@ -32,6 +33,6 @@ private:
     using ConnsList=std::set<muduo::net::TcpConnectionPtr>;
     using Iter=std::map<int,std::set<muduo::net::TcpConnectionPtr>>::iterator;
     std::map<int,std::set<muduo::net::TcpConnectionPtr>>rooms;
-    msgCb sendBack;
+    TellCli tellCli;
 };
 #endif

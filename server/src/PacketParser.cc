@@ -1,34 +1,34 @@
 #include "PacketParser.h"
+#include "RoomManager.h"
+#include "PairManager.h"
 #include "Proto.h"
 #include "Account.h"
 #include "Nickname.h"
 #include "Login.h"
 #include "Logout.h"
 #include "Regist.h"
-#include "RoomManager.h"
-#include "PairManager.h"
 #include "LobbyInfo.h"
 #include "RoomInfo.h"
 #include "PlayerInfo.h"
 #include "PlayersInfo.h"
-#include "GroupChat.h"
 #include "Player.h"
+#include "GroupChat.h"
+#include "SinglecastMsg.h"
 #include "Room.h"
 #include "Handshake.h"
 #include "ChessInfo.h"
-#include "SinglecastMsg.h"
 #include "GameResult.h"
 #include "BookSeat.h"
 #include <redbud/parser/json_parser.h>
 #define T REQUEST_TYPE
 
-using namespace redbud::parser::json;
 using namespace std;
+using namespace redbud::parser::json;
 
 void
 PacketParser::encode(){
     auto str=out.dumps();
-    sendBack(conn,str);
+    tellCli(conn,str);
 }
 
 void
@@ -55,6 +55,7 @@ PacketParser::dispatch(){
         case T::LOGIN:
         {
             Login login(in);
+            login.setConn(conn);
             out=login.handle();
             RoomManager::getInstance().add(conn,0);
         }
@@ -119,11 +120,6 @@ PacketParser::dispatch(){
         break;
         case T::UPDATE_PLAYER:
         {
-#if 0
-           Table table(in);
-           table.setConn(conn);
-           out=table.handle();
-#endif
            Player player(in);
            player.setConn(conn);
            out=player.handle();

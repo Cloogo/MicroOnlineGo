@@ -1,13 +1,13 @@
-#include "GameResult.h"
 #include "Proto.h"
+#include "GameResult.h"
 #include "SqlStm.h"
 #include "PairManager.h"
 
 #define T RESPONSE_TYPE
 
-using namespace redbud::parser::json;
-using namespace muduo::net;
 using namespace std;
+using namespace muduo::net;
+using namespace redbud::parser::json;
 
 GameResult::GameResult(const Json& in){
     roomid=in["room_id"].as_number();

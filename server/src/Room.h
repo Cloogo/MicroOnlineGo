@@ -23,7 +23,7 @@ private:
     redbud::parser::json::Json out;
     muduo::net::TcpConnectionPtr conn;
     PLAYER_ACTION action;
-    int roomid;
+    int id;
     std::string name;
     std::string player1;
     std::string player2;

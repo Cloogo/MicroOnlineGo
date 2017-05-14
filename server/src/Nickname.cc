@@ -12,7 +12,7 @@ Nickname::Nickname(const Json& in){
 
 Json
 Nickname::check(){
-    std::string stm="select * from users where nickname=\""+nickname+"\"";
+    std::string stm="select * from users where nickname=\""+nickname+"\" limit 1";
     if(SqlStm::isExisted(stm)){
         out["response type"]=static_cast<int>(T::NICKNAME_CHECK_FAILED);
         out["reason"]="nickname has been used";

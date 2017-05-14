@@ -9,8 +9,8 @@ PairManager* PairManager::instance=NULL;
 pthread_mutex_t pm_mutex=PTHREAD_MUTEX_INITIALIZER;
 
 void
-PairManager::setCb(const msgCb& sendBack_){
-    sendBack=sendBack_;
+PairManager::setCb(const TellCli& tellCli_){
+    tellCli=tellCli_;
 }
 
 bool
@@ -88,10 +88,10 @@ PairManager::singlecast(const TcpConnectionPtr& self,const int id,std::string ms
     pthread_mutex_lock(&pm_mutex);
     if(find(id)){
         ConnPair connPair=pairsList[id];
-        if(connPair.first!=self){
-            sendBack(connPair.first,msg);
-        }else{
-            sendBack(connPair.second,msg);
+        if(connPair.first!=nullptr&&connPair.first!=self){
+            tellCli(connPair.first,msg);
+        }else if(connPair.second!=nullptr&&connPair.second!=self){
+            tellCli(connPair.second,msg);
         }
     }
     pthread_mutex_unlock(&pm_mutex);

@@ -10,9 +10,9 @@ public:
     redbud::parser::json::Json handle();
     void setConn(const muduo::net::TcpConnectionPtr& conn_);
 private:
+    redbud::parser::json::Json out;
     muduo::net::TcpConnectionPtr conn;
     std::string account;
     std::string msg;
-    redbud::parser::json::Json out;
 };
 #endif

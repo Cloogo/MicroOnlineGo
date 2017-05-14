@@ -9,8 +9,8 @@ RoomManager* RoomManager::instance=NULL;
 pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
 
 void
-RoomManager::setCb(const msgCb& sendBack_){
-    sendBack=sendBack_;
+RoomManager::setCb(const TellCli& tellCli_){
+    tellCli=tellCli_;
 }
 
 bool
@@ -55,7 +55,7 @@ RoomManager::broadcast(const int roomId,std::string msg){
     if(find(roomId)){
         ConnsList room=rooms[roomId];
         for(set<TcpConnectionPtr>::iterator it=room.begin();it!=room.end();it++){
-            sendBack(*it,msg);
+            tellCli(*it,msg);
         }
     }
     pthread_mutex_unlock(&mutex);
@@ -70,7 +70,7 @@ RoomManager::broadcast2(const TcpConnectionPtr& conn,const int roomId,std::strin
             if(*it==conn){
                 continue;
             }
-            sendBack(*it,msg);
+            tellCli(*it,msg);
         }
     }
     pthread_mutex_unlock(&mutex);

@@ -29,6 +29,7 @@ GoServer::onConnection(const TcpConnectionPtr& conn){
             <<(conn->connected()?"UP":"DOWN");
     if(conn->connected()){
     }else{
+        RoomManager::getInstance().remove(conn,0);
     }
 }
 
@@ -40,7 +41,6 @@ GoServer::receive(const TcpConnectionPtr& conn,
       const void* data = buf->peek();
       const int32_t be32 = *static_cast<const int32_t*>(data); // SIGBUS
       int32_t len = muduo::net::sockets::networkToHost32(be32);
-      LOG_INFO<<"LENGTH:"<<len;
       if (len > 65536 || len < 0){
         LOG_ERROR << "Invalid length " << len;
         conn->shutdown();
@@ -55,7 +55,7 @@ GoServer::receive(const TcpConnectionPtr& conn,
         packet.dispatch();
         buf->retrieve(len);
       }else{
-//        LOG_INFO<<"READABLEBYTE:"<<buf->readableBytes();
+//        LOG_INFO<<"READABLEN:"<<buf->readableBytes();
 //        std::string msg(buf->peek(),buf->readableBytes());
 //        LOG_INFO<<"READABLE CONTENT:"<<msg;
         break;

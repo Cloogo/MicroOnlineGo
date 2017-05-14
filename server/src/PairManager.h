@@ -1,6 +1,5 @@
 #ifndef _PAIRMANAGER_H
 #define _PAIRMANAGER_H
-#include "Proto.h"
 #include <pthread.h>
 #include <map>
 #include <set>
@@ -9,10 +8,11 @@
 #include <boost/function.hpp>
 #include <redbud/parser/json.h>
 #include <muduo/net/TcpConnection.h>
+#include "Proto.h"
 
 class PairManager:boost::noncopyable{
 public:
-    using msgCb=boost::function<void (const muduo::net::TcpConnectionPtr&,
+    using TellCli=boost::function<void (const muduo::net::TcpConnectionPtr&,
                                   std::string&)>;
     static PairManager& getInstance(){
         pthread_once(&ponce,&PairManager::init);
@@ -21,7 +21,7 @@ public:
     static void init(){
         instance=new PairManager();
     }
-    void setCb(const msgCb& sendBack_);
+    void setCb(const TellCli& tellCli_);
     bool find(const int id);
     ORDER add(const muduo::net::TcpConnectionPtr& conn,const int id);
     void remove(const muduo::net::TcpConnectionPtr& conn,const int id);
@@ -35,6 +35,6 @@ private:
     using ConnPairsList=std::map<int,ConnPair>;
     using Iter=ConnPairsList::iterator;
     ConnPairsList pairsList;
-    msgCb sendBack;
+    TellCli tellCli;
 };
 #endif

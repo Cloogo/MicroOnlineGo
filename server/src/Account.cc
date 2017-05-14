@@ -1,9 +1,8 @@
-#include "Account.h"
 #include "Proto.h"
+#include "Account.h"
 #include "SqlStm.h"
 
 #define T RESPONSE_TYPE
-
 using namespace redbud::parser::json;
 
 Account::Account(const Json& in){
@@ -12,7 +11,7 @@ Account::Account(const Json& in){
 
 Json
 Account::check(){
-    std::string stm="select * from users where account=\""+account+"\"";
+    std::string stm="select * from users where account=\""+account+"\" limit 1";
     if(SqlStm::isExisted(stm)){
         out["response_type"]=static_cast<int>(T::ACCOUNT_CHECK_FAILED);
         out["reason"]="account already exists";

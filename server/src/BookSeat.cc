@@ -1,13 +1,13 @@
-#include "BookSeat.h"
 #include "Proto.h"
+#include "BookSeat.h"
 #include "SqlManager.h"
 #include "SqlStm.h"
 #include "RoomManager.h"
 
 #define T RESPONSE_TYPE
-using namespace redbud::parser::json;
 using namespace std;
 using namespace muduo::net;
+using namespace redbud::parser::json;
 
 BookSeat::BookSeat(const Json& in){
     id=in["room_id"].as_number();

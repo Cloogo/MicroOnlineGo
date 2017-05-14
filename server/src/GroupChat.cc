@@ -1,11 +1,10 @@
+#include "Proto.h"
 #include "GroupChat.h"
 #include "RoomManager.h"
-#include "Proto.h"
 
 #define T RESPONSE_TYPE
-
-using namespace redbud::parser::json;
 using namespace muduo::net;
+using namespace redbud::parser::json;
 
 GroupChat::GroupChat(const Json& in){
     account=in["account"].as_string();
@@ -14,12 +13,11 @@ GroupChat::GroupChat(const Json& in){
 
 Json
 GroupChat::handle(){
-    Json msgtoall;
-    msgtoall["response_type"]=static_cast<int>(T::GROUP_CHAT_MSG);
-    msgtoall["account"]=account;
-    
-    msgtoall["message"]=msg;
-    RoomManager::getInstance().broadcast2(conn,0,msgtoall.dumps());
+    Json toall;
+    toall["response_type"]=static_cast<int>(T::GROUP_CHAT_MSG);
+    toall["account"]=account;
+    toall["message"]=msg;
+    RoomManager::getInstance().broadcast2(conn,0,toall.dumps());
     out["response_type"]=static_cast<int>(T::GROUP_CHAT_SUCCESS);
     return out;
 }
@@ -28,5 +26,3 @@ void
 GroupChat::setConn(const TcpConnectionPtr& conn_){
     conn=conn_;
 }
-
-

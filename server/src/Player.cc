@@ -1,15 +1,14 @@
-#include "Player.h"
 #include "Proto.h"
+#include "Player.h"
 #include "SqlStm.h"
 #include "SqlManager.h"
 #include "SqlStm.h"
 #include "RoomManager.h"
 
 #define T RESPONSE_TYPE
-
 using namespace std;
-using namespace redbud::parser::json;
 using namespace muduo::net;
+using namespace redbud::parser::json;
 
 Player::Player(const Json& in_){
     in=in_;

@@ -1,11 +1,11 @@
-#include "Regist.h"
 #include "Proto.h"
+#include "Regist.h"
 #include "SqlManager.h"
 #include "SqlStm.h"
 
 #define T RESPONSE_TYPE
-using namespace redbud::parser::json;
 using namespace std;
+using namespace redbud::parser::json;
 
 Regist::Regist(const Json& in){
     account =in["account"].as_string();
@@ -27,10 +27,10 @@ Regist::Regist(const Json& in){
 
 Json
 Regist::handle(){
-    string stm="insert into users values(\""
-        +account+"\",\""
-        +nickname+"\",\""
-        +passwd+"\","
+    string stm="insert into users values("
+        "\""+account+"\","+
+        "\""+nickname+"\","+
+        "\""+passwd+"\","
         +to_string(level)+","
         +to_string(rank)+","
         +to_string(win)+","

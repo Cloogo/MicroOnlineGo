@@ -11,7 +11,6 @@ public:
     redbud::parser::json::Json handle();
 private:
     redbud::parser::json::Json out;
-    redbud::parser::json::Json torival;
     muduo::net::TcpConnectionPtr conn;
     int roomid;
     std::string account;
