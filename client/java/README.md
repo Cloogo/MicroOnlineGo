@@ -37,11 +37,13 @@ client/java
 client/java/client/lib
 ```
 
-#### 5. Open the file `clinet/java/client/src/main/Client.java`, and right click on it and run `Client.main()`.
+#### 5. Modify the `ip` and `port` in `client/java/client/src/main/communication/Connect.properties` if you want to play online, and the tutorial for run server is in [this](https://github.com/Cloogo/MicroOnlineGo/tree/master/server).
+
+#### 6. Open the file `clinet/java/client/src/main/Client.java`, and right click on it and run `Client.main()`.
 
 # Document
 
-See [docs](https://github.com/Alinshans/GoClientDev/tree/master/client/java/docs)
+See [docs](https://github.com/Alinshans/GoClientDev/tree/master/client/java/docs).
 
 # Contributors
 
